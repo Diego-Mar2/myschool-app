@@ -1,12 +1,13 @@
-import { Flex, IconButton } from '@chakra-ui/react';
-import { SectionName, Sections } from '../views';
+import { Flex } from "@chakra-ui/react";
+import { SectionName, Sections } from "../views";
 
 interface MainProps {
-  activeSection: SectionName
+  activeSection: SectionName;
 }
 
-export default function Main({activeSection}: MainProps) {
-const Section = Sections[activeSection]
+export default function Main({ activeSection }: MainProps) {
+
+  const { component: Component, form: Form } = Sections[activeSection];
 
   return (
     <Flex
@@ -20,16 +21,9 @@ const Section = Sections[activeSection]
       position="relative"
       borderRadius="3xl"
     >
-      <IconButton
-        aria-label="Menu-Collapse"
-        position='absolute'
-        top={6}
-        left={6}
-        onClick={() => null}
 
-      />
       <Flex>
-        <Section />
+        <Component Form={Form} />
       </Flex>
     </Flex>
   );

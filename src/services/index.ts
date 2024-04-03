@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:3001/admin";
+const baseURL = "https://minha-escola-backend-fatec-tg.vercel.app/admin";
 
 export const fetchData = (accessToken: string) => {
   return axios.create({

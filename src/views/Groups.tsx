@@ -2,12 +2,12 @@ import { Table, Tr, Td, Tbody, Flex } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import Header, { HeaderProps } from "../components/Header";
 
-interface CoursesProps extends HeaderProps {
+interface GroupsProps extends HeaderProps {
 
 }
 
-export default function Courses({Form}: CoursesProps) {
-  const { data, listData, handleFindById, handleDeleteById } = useSectionCRUD("/courses");
+export default function Groups({Form}: GroupsProps) {
+  const { data, listData, handleFindById, handleDeleteById } = useSectionCRUD("/groups");
   return (
     <div>
       <Header Form={Form}/>
