@@ -2,10 +2,13 @@ import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 
 export interface HeaderProps {
-  Form:() => React.ReactNode
+  Form: (props: any) => React.ReactNode;
+  handleCreate: (body: object) => Promise<void>;
+  handleUpdateById: (id: number, body: object) => Promise<void>;
+  data: any
 }
 
-export default function Header({Form}:HeaderProps) {
+export default function Header({ Form, handleCreate, handleUpdateById, data }: HeaderProps) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   return (
@@ -19,7 +22,7 @@ export default function Header({Form}:HeaderProps) {
       >
         Adicionar
       </Button>
-      {isCreateOpen && <Form />}
+      {isCreateOpen && <Form handleCreate={handleCreate} handleUpdateById={handleUpdateById} setIsCreateOpen={setIsCreateOpen} data={data}/>}
     </>
   );
 }

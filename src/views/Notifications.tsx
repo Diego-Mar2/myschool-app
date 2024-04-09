@@ -7,10 +7,22 @@ interface NotificationsProps extends HeaderProps {
 }
 
 export default function Notifications({Form}: NotificationsProps) {
-  const { data, listData, handleFindById, handleDeleteById } = useSectionCRUD("/notifications");
+  const {
+    data,
+    listData,
+    handleFindById,
+    handleDeleteById,
+    handleCreate,
+    handleUpdateById,
+  } = useSectionCRUD("/notifications");
   return (
     <div>
-      <Header Form={Form}/>
+      <Header
+        Form={Form}
+        handleCreate={handleCreate}
+        handleUpdateById={handleUpdateById}
+        data={data}
+      />
       {data && (
         <Flex>
           {JSON.stringify(data)}

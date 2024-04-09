@@ -4,6 +4,7 @@ import Courses from "./Courses";
 import Groups from "./Groups";
 import Locations from "./Locations";
 import Notifications from "./Notifications";
+import Staffs from "./Staffs";
 import Students from "./Students";
 import Subjects from "./Subjects";
 
@@ -28,6 +29,10 @@ export const Sections = {
   },
   Alunos: {
     component: Students,
+    form: CourseForm
+  },
+  Professores: {
+    component: Staffs,
     form: CourseForm
   },
   'Salas de aula': {

@@ -7,10 +7,22 @@ interface StaffsProps extends HeaderProps {
 }
 
 export default function Staffs({Form}: StaffsProps) {
-  const { data, listData, handleFindById, handleDeleteById } = useSectionCRUD("/staffs");
+  const {
+    data,
+    listData,
+    handleFindById,
+    handleDeleteById,
+    handleCreate,
+    handleUpdateById,
+  } = useSectionCRUD("/staff");
   return (
     <div>
-      <Header Form={Form}/>
+      <Header
+        Form={Form}
+        handleCreate={handleCreate}
+        handleUpdateById={handleUpdateById}
+        data={data}
+      />
       {data && (
         <Flex>
           {JSON.stringify(data)}

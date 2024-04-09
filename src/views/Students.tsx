@@ -7,10 +7,22 @@ interface StudentsProps extends HeaderProps {
 }
 
 export default function Students({Form}: StudentsProps) {
-  const { data, listData, handleFindById, handleDeleteById } = useSectionCRUD("/students");
+  const {
+    data,
+    listData,
+    handleFindById,
+    handleDeleteById,
+    handleCreate,
+    handleUpdateById,
+  } = useSectionCRUD("/students");
   return (
     <div>
-      <Header Form={Form}/>
+      <Header
+        Form={Form}
+        handleCreate={handleCreate}
+        handleUpdateById={handleUpdateById}
+        data={data}
+      />
       {data && (
         <Flex>
           {JSON.stringify(data)}
