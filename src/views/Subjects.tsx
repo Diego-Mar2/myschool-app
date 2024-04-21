@@ -4,6 +4,12 @@ import Header, { HeaderProps } from "../components/Header";
 
 interface SubjectsProps extends HeaderProps {}
 
+interface Subject {
+  id: number
+  name: string
+  description: string
+}
+
 export default function Subjects({ Form }: SubjectsProps) {
   const {
     data,
@@ -12,7 +18,7 @@ export default function Subjects({ Form }: SubjectsProps) {
     handleFindById,
     handleUpdateById,
     handleDeleteById,
-  } = useSectionCRUD("/subjects");
+  } = useSectionCRUD<Subject>("/subjects");
   return (
     <div>
       <Header
@@ -36,21 +42,23 @@ export default function Subjects({ Form }: SubjectsProps) {
       <Table variant="striped" colorScheme="teal" size="sm">
         <Thead>
           <Tr>
+            <Th>ID</Th>
             <Th>Nome da Matéria</Th>
             <Th>Descrição</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {listData.map((item: any) => (
+          {listData.map(({id,name,description}) => (
             <Tr
-              key={item.id}
+              key={id}
               onClick={() => {
-                handleFindById(item.id);
+                handleFindById(id);
               }}
               style={{ cursor: "pointer" }}
             >
-              <Td>{item.name}</Td>
-              <Td>{item.description}</Td>
+              <Td>{id}</Td>
+              <Td>{name}</Td>
+              <Td>{description}</Td>
             </Tr>
           ))}
         </Tbody>

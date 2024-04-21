@@ -1,8 +1,19 @@
-import { Table, Tr, Td, Tbody, Flex } from "@chakra-ui/react";
+import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import Header, { HeaderProps } from "../components/Header";
 
 interface ClassesProps extends HeaderProps {}
+
+interface Class {
+  id: number;
+  name: string | null;
+  description: string | null;
+  date: string;
+  start_time: string;
+  end_time: string;
+  group_id: number;
+  location_id: number;
+}
 
 export default function Classes({ Form }: ClassesProps) {
   const {
@@ -12,7 +23,7 @@ export default function Classes({ Form }: ClassesProps) {
     handleFindById,
     handleUpdateById,
     handleDeleteById,
-  } = useSectionCRUD("/classes");
+  } = useSectionCRUD<Class>("/classes");
   return (
     <div>
       <Header
@@ -33,21 +44,54 @@ export default function Classes({ Form }: ClassesProps) {
         </Flex>
       )}
 
-      <Table>
+      <Table variant="striped" colorScheme="teal" size="sm">
+        <Thead>
+          <Tr>
+            <Th>ID</Th>
+            <Th>Aula</Th>
+            <Th>Descrição</Th>
+            <Th>Local</Th>
+            <Th>Turma</Th>
+            <Th>Data</Th>
+            <Th>Início</Th>
+            <Th>Término</Th>
+          </Tr>
+        </Thead>
         <Tbody>
-          {listData.map((item: any) => (
-            <Tr key={item.id}>
-              <Td>
-                <button
+          {listData.map(
+            ({
+              id,
+              name,
+              description,
+              location_id,
+              group_id,
+              date,
+              start_time,
+              end_time,
+            }) => {
+              const dateObj = new Date(date);
+              dateObj.setDate(dateObj.getDate() + 1);
+
+              return (
+                <Tr
+                  key={id}
                   onClick={() => {
-                    handleFindById(item.id);
+                    handleFindById(id);
                   }}
+                  style={{ cursor: "pointer" }}
                 >
-                  {JSON.stringify(item)}
-                </button>
-              </Td>
-            </Tr>
-          ))}
+                  <Td>{id}</Td>
+                  <Td>{name}</Td>
+                  <Td>{description}</Td>
+                  <Td>{location_id}</Td>
+                  <Td>{group_id}</Td>
+                  <Td>{dateObj.toLocaleDateString()}</Td>
+                  <Td>{start_time.substring(0,5)}</Td>
+                  <Td>{end_time.substring(0,5)}</Td>
+                </Tr>
+              );
+            }
+          )}
         </Tbody>
       </Table>
     </div>

@@ -5,9 +5,9 @@ import { deleteById } from "../services/deleteById";
 import { updateById } from "../services/updateById";
 import { create } from "../services/create";
 
-export function useSectionCRUD(path: string) {
-  const [listData, setListData] = useState([]);
-  const [data, setData] = useState<any>();
+export function useSectionCRUD<T = any>(path: string) {
+  const [listData, setListData] = useState<T[]>([]);
+  const [data, setData] = useState<T>();
   const [canFetch, setCanFetch] = useState(true);
 
   async function handleCreate(body: object) {

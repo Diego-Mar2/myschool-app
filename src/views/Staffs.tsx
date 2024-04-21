@@ -1,9 +1,18 @@
-import { Table, Tr, Td, Tbody, Flex } from "@chakra-ui/react";
+import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import Header, { HeaderProps } from "../components/Header";
 
 interface StaffsProps extends HeaderProps {
 
+}
+
+interface Staff {
+  id: number
+  name: string
+  email: string
+  document: string
+  is_admin: boolean
+  auth_user_id: string
 }
 
 export default function Staffs({Form}: StaffsProps) {
@@ -14,7 +23,7 @@ export default function Staffs({Form}: StaffsProps) {
     handleDeleteById,
     handleCreate,
     handleUpdateById,
-  } = useSectionCRUD("/staff");
+  } = useSectionCRUD<Staff>("/staff");
   return (
     <div>
       <Header
@@ -33,19 +42,31 @@ export default function Staffs({Form}: StaffsProps) {
         </Flex>
       )}
 
-      <Table>
+<Table variant="striped" colorScheme="teal" size="sm">
+        <Thead>
+          <Tr>
+            <Th>ID</Th>
+            <Th>Nome</Th>
+            <Th>Email</Th>
+            <Th>CPF</Th>
+            <Th>É administrador?</Th>
+
+          </Tr>
+        </Thead>
         <Tbody>
-          {listData.map((item: any) => (
-            <Tr key={item.id}>
-              <Td>
-                <button
-                  onClick={() => {
-                    handleFindById(item.id);
-                  }}
-                >
-                  {JSON.stringify(item)}
-                </button>
-              </Td>
+          {listData.map(({id,name,email,document,is_admin}) => (
+            <Tr
+              key={id}
+              onClick={() => {
+                handleFindById(id);
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <Td>{id}</Td>
+              <Td>{name}</Td>
+              <Td>{email}</Td>
+              <Td>{document}</Td>
+              <Td>{is_admin ? "sim" : "não"}</Td>
             </Tr>
           ))}
         </Tbody>

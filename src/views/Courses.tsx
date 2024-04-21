@@ -4,6 +4,12 @@ import Header, { HeaderProps } from "../components/Header";
 
 interface CoursesProps extends HeaderProps {}
 
+interface Course {
+  id: number
+  name: string
+  description: string
+}
+
 export default function Courses({ Form }: CoursesProps) {
   const {
     data,
@@ -12,7 +18,7 @@ export default function Courses({ Form }: CoursesProps) {
     handleDeleteById,
     handleCreate,
     handleUpdateById,
-  } = useSectionCRUD("/courses");
+  } = useSectionCRUD<Course>("/courses");
   return (
     <div>
       <Header
@@ -36,21 +42,23 @@ export default function Courses({ Form }: CoursesProps) {
       <Table variant="striped" colorScheme="teal" size="sm">
         <Thead>
           <Tr>
+            <Th>ID</Th>
             <Th>Nome do Curso</Th>
             <Th>Descrição</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {listData.map((item: any) => (
+          {listData.map(({id, name, description}) => (
             <Tr
-              key={item.id}
+              key={id}
               onClick={() => {
-                handleFindById(item.id);
+                handleFindById(id);
               }}
               style={{ cursor: 'pointer' }}
             >
-              <Td>{item.name}</Td>
-              <Td>{item.description}</Td>
+              <Td>{id}</Td>
+              <Td>{name}</Td>
+              <Td>{description}</Td>
             </Tr>
           ))}
         </Tbody>

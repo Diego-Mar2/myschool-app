@@ -19,11 +19,11 @@ export const Sections = {
     component: Subjects,
     form: CourseForm
   },
-  Classes: {
+  Aulas: {
     component: Classes,
     form: CourseForm
   },
-  Grupos: {
+  Turmas: {
     component: Groups,
     form: CourseForm
   },

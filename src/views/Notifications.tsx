@@ -1,12 +1,18 @@
-import { Table, Tr, Td, Tbody, Flex } from "@chakra-ui/react";
+import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import Header, { HeaderProps } from "../components/Header";
 
-interface NotificationsProps extends HeaderProps {
+interface NotificationsProps extends HeaderProps {}
 
+interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  created_at: string;
+  staff_id: number;
 }
 
-export default function Notifications({Form}: NotificationsProps) {
+export default function Notifications({ Form }: NotificationsProps) {
   const {
     data,
     listData,
@@ -14,7 +20,7 @@ export default function Notifications({Form}: NotificationsProps) {
     handleDeleteById,
     handleCreate,
     handleUpdateById,
-  } = useSectionCRUD("/notifications");
+  } = useSectionCRUD<Notification>("/notifications");
   return (
     <div>
       <Header
@@ -27,27 +33,45 @@ export default function Notifications({Form}: NotificationsProps) {
         <Flex>
           {JSON.stringify(data)}
           <button
-          style={{background: 'red'}}
-          onClick={() => handleDeleteById(data.id)}
-          >deletar registro</button>
+            style={{ background: "red" }}
+            onClick={() => handleDeleteById(data.id)}
+          >
+            deletar registro
+          </button>
         </Flex>
       )}
 
-      <Table>
+      <Table variant="striped" colorScheme="teal" size="sm">
+        <Thead>
+          <Tr>
+            <Th>ID</Th>
+            <Th>Professor</Th>
+            <Th>Criado em</Th>
+            <Th>Título</Th>
+            <Th>Descrição</Th>
+          </Tr>
+        </Thead>
         <Tbody>
-          {listData.map((item: any) => (
-            <Tr key={item.id}>
-              <Td>
-                <button
-                  onClick={() => {
-                    handleFindById(item.id);
-                  }}
-                >
-                  {JSON.stringify(item)}
-                </button>
-              </Td>
-            </Tr>
-          ))}
+          {listData.map(({ id, staff_id, created_at, title, message }) => {
+            const dateObj = new Date(created_at)
+            const formattedDate = dateObj.toLocaleDateString()
+            const formattedTime = dateObj.toLocaleTimeString().substring(0,5)
+            return (
+              <Tr
+                key={id}
+                onClick={() => {
+                  handleFindById(id);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <Td>{id}</Td>
+                <Td>{staff_id}</Td>
+                <Td>{formattedDate} - {formattedTime}</Td>
+                <Td>{title}</Td>
+                <Td>{message}</Td>
+              </Tr>
+            );
+          })}
         </Tbody>
       </Table>
     </div>

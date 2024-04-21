@@ -1,12 +1,21 @@
-import { Table, Tr, Td, Tbody, Flex } from "@chakra-ui/react";
+import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import Header, { HeaderProps } from "../components/Header";
 
-interface StudentsProps extends HeaderProps {
+interface StudentsProps extends HeaderProps {}
 
+interface Student {
+  id: number
+  name: string
+  email: string
+  document: string
+  sr: string
+  semester: string
+  course_id: string
+  auth_user_id: string
 }
 
-export default function Students({Form}: StudentsProps) {
+export default function Students({ Form }: StudentsProps) {
   const {
     data,
     listData,
@@ -14,7 +23,7 @@ export default function Students({Form}: StudentsProps) {
     handleDeleteById,
     handleCreate,
     handleUpdateById,
-  } = useSectionCRUD("/students");
+  } = useSectionCRUD<Student>("/students");
   return (
     <div>
       <Header
@@ -27,25 +36,42 @@ export default function Students({Form}: StudentsProps) {
         <Flex>
           {JSON.stringify(data)}
           <button
-          style={{background: 'red'}}
-          onClick={() => handleDeleteById(data.id)}
-          >deletar registro</button>
+            style={{ background: "red" }}
+            onClick={() => handleDeleteById(data.id)}
+          >
+            deletar registro
+          </button>
         </Flex>
       )}
 
-      <Table>
+      <Table variant="striped" colorScheme="teal" size="sm">
+        <Thead>
+          <Tr>
+            <Th>ID</Th>
+            <Th>Nome</Th>
+            <Th>Email</Th>
+            <Th>CPF</Th>
+            <Th>RA</Th>
+            <Th>Curso</Th>
+            <Th>Semestre</Th>
+          </Tr>
+        </Thead>
         <Tbody>
-          {listData.map((item: any) => (
-            <Tr key={item.id}>
-              <Td>
-                <button
-                  onClick={() => {
-                    handleFindById(item.id);
-                  }}
-                >
-                  {JSON.stringify(item)}
-                </button>
-              </Td>
+          {listData.map(({id,name,document,email,sr,semester,course_id}) => (
+            <Tr
+              key={id}
+              onClick={() => {
+                handleFindById(id);
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <Td>{id}</Td>
+              <Td>{name}</Td>
+              <Td>{email}</Td>
+              <Td>{document}</Td>
+              <Td>{sr}</Td>
+              <Td>{course_id}</Td>
+              <Td>{semester}</Td>
             </Tr>
           ))}
         </Tbody>
