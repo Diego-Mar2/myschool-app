@@ -24,6 +24,11 @@ export default function Sidebar({ setActiveSection }: SidebarProps) {
         {SectionsNames.map((section) => (
           <ListItem key={section}>
             <Button
+            variant="ghost"
+            colorScheme='teal'
+            w={300}
+            justifyContent="flex-start"
+
               onClick={() => {
                 setActiveSection(section);
               }}

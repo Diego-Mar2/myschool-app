@@ -20,7 +20,7 @@ export default function Header({ Form, handleCreate, handleUpdateById, data }: H
         left={6}
         onClick={() => setIsCreateOpen(!isCreateOpen)}
       >
-        Adicionar
+        + Adicionar
       </Button>
       {isCreateOpen && <Form handleCreate={handleCreate} handleUpdateById={handleUpdateById} setIsCreateOpen={setIsCreateOpen} data={data}/>}
     </>
