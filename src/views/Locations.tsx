@@ -4,7 +4,7 @@ import Header, { HeaderProps } from "../components/Header";
 
 interface LocationsProps extends HeaderProps {}
 
-interface Location {
+export interface Location {
   id: number;
   building: string;
   floor: number;

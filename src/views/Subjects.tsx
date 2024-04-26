@@ -4,7 +4,7 @@ import Header, { HeaderProps } from "../components/Header";
 
 interface SubjectsProps extends HeaderProps {}
 
-interface Subject {
+export interface Subject {
   id: number
   name: string
   description: string

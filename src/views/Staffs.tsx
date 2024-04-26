@@ -6,7 +6,7 @@ interface StaffsProps extends HeaderProps {
 
 }
 
-interface Staff {
+export interface Staff {
   id: number
   name: string
   email: string

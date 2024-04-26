@@ -1,4 +1,9 @@
+import ClassesForm from "../components/forms/ClassesForm";
 import CourseForm from "../components/forms/CoursesForm";
+import LocationsForm from "../components/forms/LocationsForm";
+import StaffsForm from "../components/forms/StaffsForm";
+import StudentsForm from "../components/forms/StudentsForm";
+import SubjectForm from "../components/forms/SubjectsForm";
 import Classes from "./Classes";
 import Courses from "./Courses";
 import Groups from "./Groups";
@@ -17,11 +22,11 @@ export const Sections = {
   },
   Matérias: {
     component: Subjects,
-    form: CourseForm
+    form: SubjectForm
   },
   Aulas: {
     component: Classes,
-    form: CourseForm
+    form: ClassesForm
   },
   Turmas: {
     component: Groups,
@@ -29,15 +34,15 @@ export const Sections = {
   },
   Alunos: {
     component: Students,
-    form: CourseForm
+    form: StudentsForm,
   },
   Professores: {
     component: Staffs,
-    form: CourseForm
+    form: StaffsForm
   },
   'Salas de aula': {
     component: Locations,
-    form: CourseForm
+    form: LocationsForm
   },
   Notificações: {
     component: Notifications,

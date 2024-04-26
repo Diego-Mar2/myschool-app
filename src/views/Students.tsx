@@ -4,7 +4,7 @@ import Header, { HeaderProps } from "../components/Header";
 
 interface StudentsProps extends HeaderProps {}
 
-interface Student {
+export interface Student {
   id: number
   name: string
   email: string
@@ -12,6 +12,7 @@ interface Student {
   sr: string
   semester: string
   course_id: string
+  course_name: string
   auth_user_id: string
 }
 
@@ -57,7 +58,7 @@ export default function Students({ Form }: StudentsProps) {
           </Tr>
         </Thead>
         <Tbody>
-          {listData.map(({id,name,document,email,sr,semester,course_id}) => (
+          {listData.map(({id,name,document,email,sr,semester,course_name}) => (
             <Tr
               key={id}
               onClick={() => {
@@ -70,7 +71,7 @@ export default function Students({ Form }: StudentsProps) {
               <Td>{email}</Td>
               <Td>{document}</Td>
               <Td>{sr}</Td>
-              <Td>{course_id}</Td>
+              <Td>{course_name}</Td>
               <Td>{semester}</Td>
             </Tr>
           ))}

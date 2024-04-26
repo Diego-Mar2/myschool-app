@@ -4,12 +4,13 @@ import Header, { HeaderProps } from "../components/Header";
 
 interface NotificationsProps extends HeaderProps {}
 
-interface Notification {
+export interface Notification {
   id: number;
   title: string;
   message: string;
   created_at: string;
   staff_id: number;
+  staff_name: string;
 }
 
 export default function Notifications({ Form }: NotificationsProps) {
@@ -52,7 +53,7 @@ export default function Notifications({ Form }: NotificationsProps) {
           </Tr>
         </Thead>
         <Tbody>
-          {listData.map(({ id, staff_id, created_at, title, message }) => {
+          {listData.map(({ id, staff_name, created_at, title, message }) => {
             const dateObj = new Date(created_at)
             const formattedDate = dateObj.toLocaleDateString()
             const formattedTime = dateObj.toLocaleTimeString().substring(0,5)
@@ -65,7 +66,7 @@ export default function Notifications({ Form }: NotificationsProps) {
                 style={{ cursor: "pointer" }}
               >
                 <Td>{id}</Td>
-                <Td>{staff_id}</Td>
+                <Td>{staff_name}</Td>
                 <Td>{formattedDate} - {formattedTime}</Td>
                 <Td>{title}</Td>
                 <Td>{message}</Td>

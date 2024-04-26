@@ -1,25 +1,25 @@
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { Course } from "../../views/Courses";
+import { Location } from "../../views/Locations";
 
-interface CourseFormProps {
+interface LocationsFormProps {
   handleCreate: (body: object) => Promise<void>;
   handleUpdateById: (id: number, body: object) => Promise<void>;
   handleClose: () => void;
   data: any;
 }
 
-export default function CourseForm({
+export default function LocationsForm({
   handleCreate,
   handleUpdateById,
   handleClose,
   data,
-}: CourseFormProps) {
-  const { register, handleSubmit } = useForm<Course>({
+}: LocationsFormProps) {
+  const { register, handleSubmit } = useForm<Location>({
     defaultValues: data,
   });
 
-  const onSubmit = async (body: Course) => {
+  const onSubmit = async (body: Location) => {
     if (!data) {
       await handleCreate(body);
     } else {
@@ -31,17 +31,24 @@ export default function CourseForm({
   return (
     <>
       <FormControl onSubmit={handleSubmit(onSubmit)}>
-        <FormLabel>Nome</FormLabel>
-        <Input {...register("name")} placeholder="Nome do curso" />
+        <FormLabel>Bloco</FormLabel>
+        <Input {...register("building")} placeholder="Nome do bloco" />
+      </FormControl>
+
+      <FormControl mt={4}>
+        <FormLabel>Andar</FormLabel>
+        <Input {...register("floor", {
+          valueAsNumber: true,
+        })} placeholder="Número do andar" />
       </FormControl>
 
       <FormControl mt={4} mb={8}>
-        <FormLabel>Descrição</FormLabel>
-        <Input {...register("description")} placeholder="Descrição do curso" />
+        <FormLabel>Sala</FormLabel>
+        <Input {...register("classroom")} placeholder="Número da sala" />
       </FormControl>
 
       <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        Criar curso
+        Adicionar local de aula
       </Button>
       <Button onClick={handleClose}>Cancelar</Button>
     </>

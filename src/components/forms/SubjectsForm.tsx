@@ -1,25 +1,25 @@
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { Course } from "../../views/Courses";
+import { Subject } from "../../views/Subjects";
 
-interface CourseFormProps {
+interface SubjectFormProps {
   handleCreate: (body: object) => Promise<void>;
   handleUpdateById: (id: number, body: object) => Promise<void>;
   handleClose: () => void;
   data: any;
 }
 
-export default function CourseForm({
+export default function SubjectForm({
   handleCreate,
   handleUpdateById,
   handleClose,
   data,
-}: CourseFormProps) {
-  const { register, handleSubmit } = useForm<Course>({
+}: SubjectFormProps) {
+  const { register, handleSubmit } = useForm<Subject>({
     defaultValues: data,
   });
 
-  const onSubmit = async (body: Course) => {
+  const onSubmit = async (body: Subject) => {
     if (!data) {
       await handleCreate(body);
     } else {
@@ -32,16 +32,16 @@ export default function CourseForm({
     <>
       <FormControl onSubmit={handleSubmit(onSubmit)}>
         <FormLabel>Nome</FormLabel>
-        <Input {...register("name")} placeholder="Nome do curso" />
+        <Input {...register("name")} placeholder="Nome da matéria" />
       </FormControl>
 
       <FormControl mt={4} mb={8}>
         <FormLabel>Descrição</FormLabel>
-        <Input {...register("description")} placeholder="Descrição do curso" />
+        <Input {...register("description")} placeholder="Descrição da matéria" />
       </FormControl>
 
       <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        Criar curso
+        Criar matéria
       </Button>
       <Button onClick={handleClose}>Cancelar</Button>
     </>

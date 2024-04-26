@@ -4,13 +4,15 @@ import Header, { HeaderProps } from "../components/Header";
 
 interface GroupsProps extends HeaderProps {}
 
-interface Group {
+export interface Group {
   id: number;
   name: string;
   year: number;
   semester: Semester;
   subject_id: number;
+  subject_name: string;
   teacher_id: number | null;
+  teacher_name: string | null;
 }
 
 type Semester = "1" | "2" | "1-2";
@@ -57,7 +59,7 @@ export default function Groups({ Form }: GroupsProps) {
         </Thead>
         <Tbody>
           {listData.map(
-            ({ id, subject_id, name, teacher_id, year, semester }) => (
+            ({ id, subject_name, name, teacher_name, year, semester }) => (
               <Tr
                 key={id}
                 onClick={() => {
@@ -66,9 +68,9 @@ export default function Groups({ Form }: GroupsProps) {
                 style={{ cursor: "pointer" }}
               >
                 <Td>{id}</Td>
-                <Td>{subject_id}</Td>
+                <Td>{subject_name}</Td>
                 <Td>{name}</Td>
-                <Td>{teacher_id ?? "Professor não atribuído"}</Td>
+                <Td>{teacher_name ?? "Professor não atribuído"}</Td>
                 <Td>{year}</Td>
                 <Td>{semester}</Td>
               </Tr>

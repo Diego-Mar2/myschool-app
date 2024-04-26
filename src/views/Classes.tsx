@@ -1,10 +1,11 @@
 import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import Header, { HeaderProps } from "../components/Header";
+import { Location } from "./Locations";
 
 interface ClassesProps extends HeaderProps {}
 
-interface Class {
+export interface Class {
   id: number;
   name: string | null;
   description: string | null;
@@ -13,6 +14,7 @@ interface Class {
   end_time: string;
   group_id: number;
   location_id: number;
+  location: Omit<Location, "id">;
 }
 
 export default function Classes({ Form }: ClassesProps) {
@@ -63,7 +65,7 @@ export default function Classes({ Form }: ClassesProps) {
               id,
               name,
               description,
-              location_id,
+              location: {building, floor,classroom},
               group_id,
               date,
               start_time,
@@ -83,7 +85,7 @@ export default function Classes({ Form }: ClassesProps) {
                   <Td>{id}</Td>
                   <Td>{name}</Td>
                   <Td>{description}</Td>
-                  <Td>{location_id}</Td>
+                  <Td>{building}, {floor > 0 ? `${floor} º` : "Térreo"}, {classroom}</Td>
                   <Td>{group_id}</Td>
                   <Td>{dateObj.toLocaleDateString()}</Td>
                   <Td>{start_time.substring(0,5)}</Td>
