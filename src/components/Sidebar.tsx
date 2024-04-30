@@ -1,11 +1,18 @@
 import { Button, Flex, List, ListItem } from "@chakra-ui/react";
+
 import { SectionName, SectionsNames } from "../views";
+
+import { supabase } from "../config/supabase";
 
 interface SidebarProps {
   setActiveSection: (activeSection: SectionName) => void;
 }
 
 export default function Sidebar({ setActiveSection }: SidebarProps) {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
   return (
     <Flex
       as="aside"
@@ -24,11 +31,10 @@ export default function Sidebar({ setActiveSection }: SidebarProps) {
         {SectionsNames.map((section) => (
           <ListItem key={section}>
             <Button
-            variant="ghost"
-            colorScheme='teal'
-            w={300}
-            justifyContent="flex-start"
-
+              variant="ghost"
+              colorScheme="teal"
+              w={300}
+              justifyContent="flex-start"
               onClick={() => {
                 setActiveSection(section);
               }}
@@ -38,6 +44,8 @@ export default function Sidebar({ setActiveSection }: SidebarProps) {
           </ListItem>
         ))}
       </List>
+
+      <Button onClick={handleLogout}>Sair da conta</Button>
     </Flex>
   );
 }
