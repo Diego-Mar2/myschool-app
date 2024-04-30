@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { Class } from "../../views/Classes";
 import { useSectionCRUD } from "../../hooks/useSectionCRUD";
 import { Location } from "../../views/Locations";
+import { Group } from "../../views/Groups";
+import InputMask from "react-input-mask";
 
 interface ClassesFormProps {
   handleCreate: (body: object) => Promise<void>;
@@ -23,16 +25,21 @@ export default function ClassesForm({
   handleClose,
   data,
 }: ClassesFormProps) {
-  const { listData } = useSectionCRUD<Location>("/locations");
+  const { listData: listDataLocations } =
+    useSectionCRUD<Location>("/locations");
+  const { listData: listDataGroups } = useSectionCRUD<Group>("/groups");
   const { register, handleSubmit } = useForm<Class>({
     defaultValues: data,
   });
 
   const onSubmit = async (body: Class) => {
+    const [day, month, year] = body.date.split('/');
+    const formattedDate = `${year}-${month}-${day}`
+
     if (!data) {
-      await handleCreate({...body, course_id: Number(body.id)});
+      await handleCreate({ ...body, course_id: Number(body.id), date: formattedDate });
     } else {
-      await handleUpdateById(data.id, {...body, course_id: Number(body.id)});
+      await handleUpdateById(data.id, { ...body, course_id: Number(body.id), date: formattedDate });
     }
     handleClose();
   };
@@ -56,8 +63,10 @@ export default function ClassesForm({
           })}
           placeholder="Selecione o local da aula"
         >
-          {listData.map(({ id, building, classroom, floor }) => (
-            <option value={id}>[{building}] {floor}º Andar, sala {classroom},</option>
+          {listDataLocations.map(({ id, building, classroom, floor }) => (
+            <option value={id}>
+              [{building}] {floor}º Andar, sala {classroom}
+            </option>
           ))}
         </Select>
         <FormLabel>Turma</FormLabel>
@@ -67,24 +76,27 @@ export default function ClassesForm({
           })}
           placeholder="Selecione a turma"
         >
-          {listData.map(({ id, building, classroom, floor }) => (
-            <option value={id}>[{building}] {floor}º Andar, sala {classroom},</option>
-          ))}
+          {listDataGroups.map(({ id, subject_name, name }) =>
+            id !== 3 ? (
+              <option value={id}>
+                {subject_name}, {name}
+              </option>
+            ) : null
+          )}
         </Select>
         <FormLabel>Data</FormLabel>
-        {/* <Input {...register("")} /> */}
+        <Input as={InputMask} mask="99/99/9999" //verificar ainda esse detalhe de data
+          {...register("date")}
+        />
       </FormControl>
       <FormControl mt={4}>
-        <FormLabel>RA</FormLabel>
-        {/* <Input {...register("")} /> */}
+        <FormLabel>Horário de início</FormLabel>
+        <Input as={InputMask} mask="99:99" {...register("start_time")} />
       </FormControl>
-      <FormControl mt={4}>
-      </FormControl>
+      <FormControl mt={4}></FormControl>
       <FormControl mt={4} mb={8}>
-        <FormLabel>Semestre</FormLabel>
-        {/* <Input {...register("", {
-          valueAsNumber: true,
-        })} /> */}
+        <FormLabel>Horário de término</FormLabel>
+        <Input as={InputMask} mask="99:99" {...register("end_time")} />
       </FormControl>
 
       <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>

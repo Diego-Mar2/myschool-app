@@ -6,7 +6,6 @@ interface MainProps {
 }
 
 export default function Main({ activeSection }: MainProps) {
-
   const { component: Component, form: Form } = Sections[activeSection];
 
   return (
@@ -20,8 +19,8 @@ export default function Main({ activeSection }: MainProps) {
       flexDirection="column"
       position="relative"
       borderRadius="3xl"
+      overflowX="auto"
     >
-
       <Flex>
         <Component Form={Form} />
       </Flex>
