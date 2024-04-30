@@ -9,6 +9,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { useRef } from "react";
+import ModalForm from "./ModalForm";
 
 export interface HeaderProps {
   Form: (props: any) => React.ReactNode;
@@ -29,11 +30,11 @@ export default function Header({
   const finalRef = useRef(null);
 
   function handleOpen() {
-    setIsCreateOpen(true)
+    setIsCreateOpen(true);
   }
 
   function handleClose() {
-    setIsCreateOpen(false)
+    setIsCreateOpen(false);
   }
 
   return (
@@ -48,7 +49,7 @@ export default function Header({
         + Adicionar
       </Button>
 
-      <Modal
+      <ModalForm
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
         isOpen={isCreateOpen}
@@ -66,11 +67,8 @@ export default function Header({
               data={data}
             />
           </ModalBody>
-
-
-
         </ModalContent>
-      </Modal>
+      </ModalForm>
     </>
   );
 }

@@ -1,8 +1,10 @@
 import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import Header, { HeaderProps } from "../components/Header";
+import Header from "../components/Header";
 
-interface GroupsProps extends HeaderProps {}
+interface GroupsProps {
+  Form: (props: any) => React.ReactNode;
+}
 
 export interface Group {
   id: number;
@@ -60,7 +62,7 @@ export default function Groups({ Form }: GroupsProps) {
         <Tbody>
           {listData.map(
             ({ id, subject_name, name, teacher_name, year, semester }) => (
-              <Tr
+              id !== 3 ? <Tr
                 key={id}
                 onClick={() => {
                   handleFindById(id);
@@ -73,7 +75,7 @@ export default function Groups({ Form }: GroupsProps) {
                 <Td>{teacher_name ?? "Professor não atribuído"}</Td>
                 <Td>{year}</Td>
                 <Td>{semester}</Td>
-              </Tr>
+              </Tr> : null
             )
           )}
         </Tbody>

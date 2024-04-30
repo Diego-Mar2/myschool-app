@@ -1,9 +1,11 @@
 import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import Header, { HeaderProps } from "../components/Header";
+import Header from "../components/Header";
 import { Location } from "./Locations";
 
-interface ClassesProps extends HeaderProps {}
+interface ClassesProps {
+  Form: (props: any) => React.ReactNode;
+}
 
 export interface Class {
   id: number;

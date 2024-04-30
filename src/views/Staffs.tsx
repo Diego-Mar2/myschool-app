@@ -1,9 +1,9 @@
 import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import Header, { HeaderProps } from "../components/Header";
+import Header from "../components/Header";
 
-interface StaffsProps extends HeaderProps {
-
+interface StaffsProps {
+  Form: (props: any) => React.ReactNode;
 }
 
 export interface Staff {
