@@ -6,28 +6,29 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { Form } from "react-hook-form";
 
 interface ModalProps {
+  Form: (props: any) => React.ReactNode;
   handleCreate: (body: object) => Promise<void>;
   handleUpdateById: (id: number, body: object) => Promise<void>;
-  handleClose: () => void;
+  isOpen: boolean;
+  onClose: () => void;
   data: any;
 }
 
 export default function ModalForm({
+  Form,
   handleCreate,
   handleUpdateById,
-  handleClose,
+  isOpen,
+  onClose,
   data,
 }: ModalProps) {
 
   return (
     <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isCreateOpen}
-        onClose={handleClose}
+        isOpen={isOpen}
+        onClose={onClose}
       >
       <ModalOverlay />
       <ModalContent p={4}>
@@ -37,7 +38,7 @@ export default function ModalForm({
           <Form
             handleCreate={handleCreate}
             handleUpdateById={handleUpdateById}
-            handleClose={handleClose}
+            handleClose={onClose}
             data={data}
           />
         </ModalBody>

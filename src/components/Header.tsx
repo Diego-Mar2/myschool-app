@@ -1,14 +1,5 @@
 import { useState } from "react";
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/react";
-import { useRef } from "react";
+import { Button } from "@chakra-ui/react";
 import ModalForm from "./ModalForm";
 
 export interface HeaderProps {
@@ -25,9 +16,6 @@ export default function Header({
   data,
 }: HeaderProps) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-
-  const initialRef = useRef(null);
-  const finalRef = useRef(null);
 
   function handleOpen() {
     setIsCreateOpen(true);
@@ -50,25 +38,13 @@ export default function Header({
       </Button>
 
       <ModalForm
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
+        Form={Form}
+        handleCreate={handleCreate}
+        handleUpdateById={handleUpdateById}
+        data={data}
         isOpen={isCreateOpen}
         onClose={handleClose}
-      >
-        <ModalOverlay />
-        <ModalContent p={4}>
-          <ModalHeader>Adicionar</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Form
-              handleCreate={handleCreate}
-              handleUpdateById={handleUpdateById}
-              handleClose={handleClose}
-              data={data}
-            />
-          </ModalBody>
-        </ModalContent>
-      </ModalForm>
+      />
     </>
   );
 }
