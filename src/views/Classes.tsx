@@ -1,7 +1,9 @@
-import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
+import { Table, Tr, Td, Tbody, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import Header from "../components/Header";
 import { Location } from "./Locations";
+import SideOver from "../components/SideOver";
+import { useState } from "react";
 
 interface ClassesProps {
   Form: (props: any) => React.ReactNode;
@@ -22,12 +24,21 @@ export interface Class {
 export default function Classes({ Form }: ClassesProps) {
   const {
     data,
+    setData,
     listData,
     handleCreate,
     handleFindById,
     handleUpdateById,
     handleDeleteById,
   } = useSectionCRUD<Class>("/classes");
+
+  const [sideOpen, setSideOpen] = useState(false);
+
+  function handleClose() {
+    setSideOpen(false);
+    setData(undefined);
+  }
+
   return (
     <div>
       <Header
@@ -36,17 +47,20 @@ export default function Classes({ Form }: ClassesProps) {
         handleUpdateById={handleUpdateById}
         data={data}
       />
-      {data && (
-        <Flex>
-          {JSON.stringify(data)}
+      <SideOver
+        data={data}
+        isOpen={sideOpen}
+        onClose={handleClose}
+        handleDeleteById={handleDeleteById}
+      >
+        {/* {JSON.stringify(data)}
           <button
             style={{ background: "red" }}
             onClick={() => handleDeleteById(data.id)}
           >
             deletar registro
-          </button>
-        </Flex>
-      )}
+          </button> */}
+      </SideOver>
 
       <Table variant="striped" colorScheme="teal" size="sm">
         <Thead>
@@ -67,7 +81,7 @@ export default function Classes({ Form }: ClassesProps) {
               id,
               name,
               description,
-              location: {building, floor,classroom},
+              location: { building, floor, classroom },
               group_id,
               date,
               start_time,
@@ -81,17 +95,21 @@ export default function Classes({ Form }: ClassesProps) {
                   key={id}
                   onClick={() => {
                     handleFindById(id);
+                    setSideOpen(true);
                   }}
                   style={{ cursor: "pointer" }}
                 >
                   <Td>{id}</Td>
                   <Td>{name}</Td>
                   <Td>{description}</Td>
-                  <Td>{building}, {floor > 0 ? `${floor} º` : "Térreo"}, {classroom}</Td>
+                  <Td>
+                    {building}, {floor > 0 ? `${floor} º` : "Térreo"},{" "}
+                    {classroom}
+                  </Td>
                   <Td>{group_id}</Td>
                   <Td>{dateObj.toLocaleDateString()}</Td>
-                  <Td>{start_time.substring(0,5)}</Td>
-                  <Td>{end_time.substring(0,5)}</Td>
+                  <Td>{start_time.substring(0, 5)}</Td>
+                  <Td>{end_time.substring(0, 5)}</Td>
                 </Tr>
               );
             }

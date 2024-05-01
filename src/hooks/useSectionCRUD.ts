@@ -55,6 +55,7 @@ export function useSectionCRUD<T = any>(path: string) {
   return {
     listData,
     data,
+    setData,
     handleCreate,
     handleFindById,
     handleDeleteById,
