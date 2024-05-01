@@ -6,7 +6,8 @@ import {
   Switch,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { Staff } from "../../views/Staffs";
+
+import type { Staff } from "../../views/Staffs";
 
 interface StaffsFormProps {
   handleCreate: (body: object) => Promise<void>;
@@ -46,17 +47,26 @@ export default function StaffsForm({
         <FormLabel>Email</FormLabel>
         <Input {...register("email")} />
       </FormControl>
+
+      {data?.id && (
+        <FormControl mt={4}>
+          <FormLabel>Matrícula</FormLabel>
+          <Input {...register("registration")} minLength={13} maxLength={13} />
+        </FormControl>
+      )}
+
       <FormControl mt={4}>
         <FormLabel>CPF</FormLabel>
         <Input {...register("document")} />
       </FormControl>
+
       <FormControl mt={4} mb={8}>
         <FormLabel>Permissão pra administração?</FormLabel>
         <Switch id="isAdmin" {...register("is_admin")} />
       </FormControl>
 
       <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        Adicionar aluno
+        Adicionar colaborador
       </Button>
       <Button onClick={handleClose}>Cancelar</Button>
     </>

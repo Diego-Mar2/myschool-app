@@ -7,15 +7,16 @@ interface StaffsProps {
 }
 
 export interface Staff {
-  id: number
-  name: string
-  email: string
-  document: string
-  is_admin: boolean
-  auth_user_id: string
+  id: number;
+  name: string;
+  email: string;
+  registration: string;
+  document: string;
+  is_admin: boolean;
+  auth_user_id: string;
 }
 
-export default function Staffs({Form}: StaffsProps) {
+export default function Staffs({ Form }: StaffsProps) {
   const {
     data,
     listData,
@@ -32,43 +33,49 @@ export default function Staffs({Form}: StaffsProps) {
         handleUpdateById={handleUpdateById}
         data={data}
       />
+
       {data && (
         <Flex>
           {JSON.stringify(data)}
           <button
-          style={{background: 'red'}}
-          onClick={() => handleDeleteById(data.id)}
-          >deletar registro</button>
+            style={{ background: "red" }}
+            onClick={() => handleDeleteById(data.id)}
+          >
+            deletar registro
+          </button>
         </Flex>
       )}
 
-<Table variant="striped" colorScheme="teal" size="sm">
+      <Table variant="striped" colorScheme="teal" size="sm">
         <Thead>
           <Tr>
             <Th>ID</Th>
             <Th>Nome</Th>
             <Th>Email</Th>
+            <Th>Matrícula</Th>
             <Th>CPF</Th>
             <Th>É administrador?</Th>
-
           </Tr>
         </Thead>
         <Tbody>
-          {listData.map(({id,name,email,document,is_admin}) => (
-            <Tr
-              key={id}
-              onClick={() => {
-                handleFindById(id);
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              <Td>{id}</Td>
-              <Td>{name}</Td>
-              <Td>{email}</Td>
-              <Td>{document}</Td>
-              <Td>{is_admin ? "sim" : "não"}</Td>
-            </Tr>
-          ))}
+          {listData.map(
+            ({ id, name, email, registration, document, is_admin }) => (
+              <Tr
+                key={id}
+                onClick={() => {
+                  handleFindById(id);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <Td>{id}</Td>
+                <Td>{name}</Td>
+                <Td>{email}</Td>
+                <Td>{registration}</Td>
+                <Td>{document}</Td>
+                <Td>{is_admin ? "sim" : "não"}</Td>
+              </Tr>
+            )
+          )}
         </Tbody>
       </Table>
     </div>

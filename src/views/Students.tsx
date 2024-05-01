@@ -7,15 +7,15 @@ interface StudentsProps {
 }
 
 export interface Student {
-  id: number
-  name: string
-  email: string
-  document: string
-  sr: string
-  semester: string
-  course_id: string
-  course_name: string
-  auth_user_id: string
+  id: number;
+  name: string;
+  email: string;
+  registration: string;
+  document: string;
+  semester: string;
+  course_id: string;
+  course_name: string;
+  auth_user_id: string;
 }
 
 export default function Students({ Form }: StudentsProps) {
@@ -35,6 +35,7 @@ export default function Students({ Form }: StudentsProps) {
         handleUpdateById={handleUpdateById}
         data={data}
       />
+
       {data && (
         <Flex>
           {JSON.stringify(data)}
@@ -53,30 +54,40 @@ export default function Students({ Form }: StudentsProps) {
             <Th>ID</Th>
             <Th>Nome</Th>
             <Th>Email</Th>
+            <Th>Matrícula</Th>
             <Th>CPF</Th>
-            <Th>RA</Th>
             <Th>Curso</Th>
             <Th>Semestre</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {listData.map(({id,name,document,email,sr,semester,course_name}) => (
-            <Tr
-              key={id}
-              onClick={() => {
-                handleFindById(id);
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              <Td>{id}</Td>
-              <Td>{name}</Td>
-              <Td>{email}</Td>
-              <Td>{document}</Td>
-              <Td>{sr}</Td>
-              <Td>{course_name}</Td>
-              <Td>{semester}</Td>
-            </Tr>
-          ))}
+          {listData.map(
+            ({
+              id,
+              name,
+              email,
+              registration,
+              document,
+              semester,
+              course_name,
+            }) => (
+              <Tr
+                key={id}
+                onClick={() => {
+                  handleFindById(id);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <Td>{id}</Td>
+                <Td>{name}</Td>
+                <Td>{email}</Td>
+                <Td>{registration}</Td>
+                <Td>{document}</Td>
+                <Td>{course_name}</Td>
+                <Td>{semester}</Td>
+              </Tr>
+            )
+          )}
         </Tbody>
       </Table>
     </div>
