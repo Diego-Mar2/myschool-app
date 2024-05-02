@@ -6,24 +6,31 @@ export function useDrawer<T extends { id: number }>(
   handleFindById: (id: number) => Promise<void>,
   handleDeleteById: (id: number) => Promise<void>
 ) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  async function handleOpen(id: number) {
-    setIsOpen(true);
+  async function handleOpenDrawer(id: number) {
+    setIsDrawerOpen(true);
     await handleFindById(id);
   }
 
-  function handleClose() {
-    setIsOpen(false);
+  function handleCloseDrawer() {
+    setIsDrawerOpen(false);
     setData(undefined);
+
+    console.log("aaaaaaa");
   }
 
-  async function handleDelete() {
+  async function handleDeleteRegister() {
     if (data?.id) {
       await handleDeleteById(data.id);
-      handleClose();
+      handleCloseDrawer();
     }
   }
 
-  return { isOpen, handleOpen, handleClose, handleDelete };
+  return {
+    isDrawerOpen,
+    handleOpenDrawer,
+    handleCloseDrawer,
+    handleDeleteRegister,
+  };
 }

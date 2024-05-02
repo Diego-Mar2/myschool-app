@@ -13,10 +13,12 @@ import {
 
 import Header from "../components/Header";
 import SideOver from "../components/SideOver";
+import ModalForm from "../components/ModalForm";
 
 import { useAuthContext } from "../contexts/AuthContext";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import { useDrawer } from "../hooks/useDrawer";
+import { useFormModal } from "../hooks/useFormModal";
 import {
   findCourseSubjects,
   CourseSubjects,
@@ -47,12 +49,15 @@ export default function Courses({ Form }: CoursesProps) {
     handleUpdateById,
   } = useSectionCRUD<Course, CourseSubjects[]>("/courses");
 
-  const { isOpen, handleOpen, handleClose, handleDelete } = useDrawer(
-    data,
-    setData,
-    handleFindById,
-    handleDeleteById
-  );
+  const {
+    isDrawerOpen,
+    handleOpenDrawer,
+    handleCloseDrawer,
+    handleDeleteRegister,
+  } = useDrawer(data, setData, handleFindById, handleDeleteById);
+
+  const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
+    useFormModal();
 
   useEffect(() => {
     if (!session?.access_token || !data?.id || data.associations) {
@@ -84,12 +89,7 @@ export default function Courses({ Form }: CoursesProps) {
 
   return (
     <div>
-      <Header
-        Form={Form}
-        handleCreate={handleCreate}
-        handleUpdateById={handleUpdateById}
-        data={data}
-      />
+      <Header handleOpenFormModal={handleOpenFormModal} />
 
       <Table variant="striped" colorScheme="teal" size="sm">
         <Thead>
@@ -102,7 +102,7 @@ export default function Courses({ Form }: CoursesProps) {
 
         <Tbody>
           {listData.map(({ id, name, description }) => (
-            <Tr key={id} onClick={() => handleOpen(id)} cursor="pointer">
+            <Tr key={id} onClick={() => handleOpenDrawer(id)} cursor="pointer">
               <Td>{id}</Td>
               <Td>{name}</Td>
               <Td>{description}</Td>
@@ -111,12 +111,13 @@ export default function Courses({ Form }: CoursesProps) {
         </Tbody>
       </Table>
 
-      {isOpen && (
+      {isDrawerOpen && (
         <SideOver
           title="Detalhes do Curso"
-          isOpen={isOpen}
-          onClose={handleClose}
-          handleDelete={handleDelete}
+          isOpen={isDrawerOpen}
+          onClose={handleCloseDrawer}
+          handleOpenFormModal={handleOpenFormModal}
+          handleDelete={handleDeleteRegister}
         >
           {!data && <p>Carregando...</p>}
 
@@ -152,6 +153,17 @@ export default function Courses({ Form }: CoursesProps) {
             </Grid>
           )}
         </SideOver>
+      )}
+
+      {isFormModalOpen && (
+        <ModalForm
+          isOpen={isFormModalOpen}
+          data={data}
+          handleCreate={handleCreate}
+          handleUpdateById={handleUpdateById}
+          onClose={handleCloseFormModal}
+          Form={Form}
+        />
       )}
     </div>
   );

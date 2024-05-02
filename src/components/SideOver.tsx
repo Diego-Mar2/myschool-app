@@ -15,6 +15,7 @@ interface SideOverProps {
   isOpen: boolean;
   title: string;
   onClose: () => void;
+  handleOpenFormModal: () => void;
   handleDelete: () => Promise<void>;
 }
 
@@ -22,6 +23,7 @@ export default function SideOver({
   isOpen,
   title,
   onClose,
+  handleOpenFormModal,
   handleDelete,
   children,
 }: PropsWithChildren<SideOverProps>) {
@@ -35,9 +37,14 @@ export default function SideOver({
         <DrawerBody>{children}</DrawerBody>
 
         <DrawerFooter>
+          <Button colorScheme="yellow" onClick={handleOpenFormModal}>
+            Editar
+          </Button>
+
           <Button color="red" variant="outline" mr={3} onClick={handleDelete}>
             Deletar
           </Button>
+
           <Button colorScheme="blue" onClick={onClose}>
             Fechar
           </Button>

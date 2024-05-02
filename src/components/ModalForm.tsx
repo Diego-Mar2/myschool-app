@@ -24,15 +24,11 @@ export default function ModalForm({
   onClose,
   data,
 }: ModalProps) {
-
   return (
-    <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-      >
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent p={4}>
-        <ModalHeader>Adicionar</ModalHeader>
+        <ModalHeader>{data ? "Editar" : "Adicionar"} </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Form
