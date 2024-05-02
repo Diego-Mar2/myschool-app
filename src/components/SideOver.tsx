@@ -7,65 +7,35 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Input,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+
+import type { PropsWithChildren } from "react";
 
 interface SideOverProps {
-  data: any;
   isOpen: boolean;
+  title: string;
   onClose: () => void;
-  handleDeleteById: (id: number) => Promise<void>;
-  slideOverCallback?: () => Promise<any>;
+  handleDelete: () => Promise<void>;
 }
 
 export default function SideOver({
-  data,
   isOpen,
+  title,
   onClose,
-  handleDeleteById,
-  slideOverCallback,
-}: SideOverProps) {
-  const [dataWithAssociations, setDataWithAssociations] = useState(data);
-
-  useEffect(() => {
-    if (data && slideOverCallback) {
-      const fetchAssociations = async () => {
-        try {
-          const associations = await slideOverCallback();
-
-          setDataWithAssociations({
-            ...data,
-            associations,
-          });
-        } catch {
-          setDataWithAssociations(data);
-        }
-      };
-
-      fetchAssociations();
-    }
-  }, [data]);
-
+  handleDelete,
+  children,
+}: PropsWithChildren<SideOverProps>) {
   return (
     <Drawer isOpen={isOpen} onClose={onClose} placement="right">
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Create your account</DrawerHeader>
+        <DrawerHeader>{title}</DrawerHeader>
 
-        <DrawerBody>
-          <Input placeholder="Type here..." />
-          {JSON.stringify(dataWithAssociations)}
-        </DrawerBody>
+        <DrawerBody>{children}</DrawerBody>
 
         <DrawerFooter>
-          <Button
-            color="red"
-            variant="outline"
-            mr={3}
-            onClick={() => handleDeleteById(data.id)}
-          >
+          <Button color="red" variant="outline" mr={3} onClick={handleDelete}>
             Deletar
           </Button>
           <Button colorScheme="blue" onClick={onClose}>

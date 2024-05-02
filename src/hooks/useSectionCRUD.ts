@@ -6,19 +6,19 @@ import { updateById } from "../services/updateById";
 import { create } from "../services/create";
 import { useAuthContext } from "../contexts/AuthContext";
 
-export function useSectionCRUD<T = any>(path: string) {
+export function useSectionCRUD<T, A = unknown>(path: string) {
   const [listData, setListData] = useState<T[]>([]);
-  const [data, setData] = useState<T>();
+  const [data, setData] = useState<T & { associations?: A }>();
   const [canFetch, setCanFetch] = useState(true);
 
-  const { session } = useAuthContext()
+  const { session } = useAuthContext();
 
-  const accessToken = session?.access_token ?? ''
+  const accessToken = session?.access_token ?? "";
 
   async function handleCreate(body: object) {
     await create(accessToken, path, body);
     setCanFetch(true);
-    setData(undefined)
+    setData(undefined);
   }
 
   async function handleFindById(id: number) {
@@ -29,13 +29,13 @@ export function useSectionCRUD<T = any>(path: string) {
   async function handleDeleteById(id: number) {
     await deleteById(accessToken, path, id);
     setCanFetch(true);
-    setData(undefined)
+    setData(undefined);
   }
 
   async function handleUpdateById(id: number, body: object) {
     await updateById(accessToken, path, id, body);
     setCanFetch(true);
-    setData(undefined)
+    setData(undefined);
   }
 
   useEffect(() => {

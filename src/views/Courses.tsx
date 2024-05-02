@@ -1,12 +1,26 @@
-import { useState } from "react";
-import { Table, Tr, Td, Th, Tbody, Thead } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import {
+  Table,
+  Tr,
+  Td,
+  Th,
+  Tbody,
+  Thead,
+  Grid,
+  List,
+  ListItem,
+} from "@chakra-ui/react";
 
 import Header from "../components/Header";
 import SideOver from "../components/SideOver";
 
 import { useAuthContext } from "../contexts/AuthContext";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import { findCourseSubjects } from "../services/findCourseSubjects";
+import { useDrawer } from "../hooks/useDrawer";
+import {
+  findCourseSubjects,
+  CourseSubjects,
+} from "../services/findCourseSubjects";
 
 interface CoursesProps {
   Form: (props: any) => React.ReactNode;
@@ -18,19 +32,11 @@ export interface Course {
   description: string;
 }
 
-interface CourseSubjects {
-  id: number;
-  semester: number;
-  subject: {
-    id: number;
-    name: string;
-  };
-}
-
 export default function Courses({ Form }: CoursesProps) {
-  const [sideOpen, setSideOpen] = useState(false);
+  const [loadingAssociations, setLoadingAssociations] = useState(false);
 
   const { session } = useAuthContext();
+
   const {
     data,
     setData,
@@ -39,20 +45,42 @@ export default function Courses({ Form }: CoursesProps) {
     handleDeleteById,
     handleCreate,
     handleUpdateById,
-  } = useSectionCRUD<Course>("/courses");
+  } = useSectionCRUD<Course, CourseSubjects[]>("/courses");
 
-  function handleClose() {
-    setSideOpen(false);
-    setData(undefined);
-  }
+  const { isOpen, handleOpen, handleClose, handleDelete } = useDrawer(
+    data,
+    setData,
+    handleFindById,
+    handleDeleteById
+  );
 
-  const slideOverCallback = async (): Promise<CourseSubjects[] | void> => {
-    if (!session?.access_token || !data?.id) {
+  useEffect(() => {
+    if (!session?.access_token || !data?.id || data.associations) {
       return;
     }
 
-    return findCourseSubjects(session.access_token, data.id);
-  };
+    const fetchCourseSubjects = async () => {
+      try {
+        setLoadingAssociations(true);
+
+        const associations = await findCourseSubjects(
+          session.access_token,
+          data.id
+        );
+
+        setData({
+          ...data,
+          associations,
+        });
+      } catch {
+        setData(data);
+      } finally {
+        setLoadingAssociations(false);
+      }
+    };
+
+    fetchCourseSubjects();
+  }, [JSON.stringify(data)]);
 
   return (
     <div>
@@ -63,14 +91,6 @@ export default function Courses({ Form }: CoursesProps) {
         data={data}
       />
 
-      <SideOver
-        data={data}
-        isOpen={sideOpen}
-        onClose={handleClose}
-        handleDeleteById={handleDeleteById}
-        slideOverCallback={slideOverCallback}
-      />
-
       <Table variant="striped" colorScheme="teal" size="sm">
         <Thead>
           <Tr>
@@ -79,16 +99,10 @@ export default function Courses({ Form }: CoursesProps) {
             <Th>Descrição</Th>
           </Tr>
         </Thead>
+
         <Tbody>
           {listData.map(({ id, name, description }) => (
-            <Tr
-              key={id}
-              onClick={() => {
-                handleFindById(id);
-                setSideOpen(true);
-              }}
-              style={{ cursor: "pointer" }}
-            >
+            <Tr key={id} onClick={() => handleOpen(id)} cursor="pointer">
               <Td>{id}</Td>
               <Td>{name}</Td>
               <Td>{description}</Td>
@@ -96,6 +110,49 @@ export default function Courses({ Form }: CoursesProps) {
           ))}
         </Tbody>
       </Table>
+
+      {isOpen && (
+        <SideOver
+          title="Detalhes do Curso"
+          isOpen={isOpen}
+          onClose={handleClose}
+          handleDelete={handleDelete}
+        >
+          {!data && <p>Carregando...</p>}
+
+          {data && (
+            <Grid gap={5}>
+              <p>
+                <strong>ID:</strong> {data.id}
+              </p>
+
+              <p>
+                <strong>Nome:</strong> {data.name}
+              </p>
+
+              <p>
+                <strong>Descrição:</strong> {data.description}
+              </p>
+
+              {(loadingAssociations || data.associations) && (
+                <div>
+                  <strong>Matérias:</strong>
+
+                  {loadingAssociations && <p>Carregando matérias...</p>}
+
+                  <List>
+                    {data.associations?.map(({ id, subject, semester }) => (
+                      <ListItem key={id}>
+                        {subject.name} - {semester}º Semestre
+                      </ListItem>
+                    ))}
+                  </List>
+                </div>
+              )}
+            </Grid>
+          )}
+        </SideOver>
+      )}
     </div>
   );
 }
