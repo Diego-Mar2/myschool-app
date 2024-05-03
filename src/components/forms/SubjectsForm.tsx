@@ -9,7 +9,7 @@ interface SubjectFormProps {
   data: any;
 }
 
-export default function SubjectForm({
+export function SubjectForm({
   handleCreate,
   handleUpdateById,
   handleClose,

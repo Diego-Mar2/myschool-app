@@ -16,7 +16,7 @@ interface StaffsFormProps {
   data: any;
 }
 
-export default function StaffsForm({
+export function StaffsForm({
   handleCreate,
   handleUpdateById,
   handleClose,

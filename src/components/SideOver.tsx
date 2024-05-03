@@ -19,7 +19,7 @@ interface SideOverProps {
   handleDelete: () => Promise<void>;
 }
 
-export default function SideOver({
+export function SideOver({
   isOpen,
   title,
   onClose,

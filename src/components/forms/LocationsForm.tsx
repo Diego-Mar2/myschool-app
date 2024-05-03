@@ -9,7 +9,7 @@ interface LocationsFormProps {
   data: any;
 }
 
-export default function LocationsForm({
+export function LocationsForm({
   handleCreate,
   handleUpdateById,
   handleClose,

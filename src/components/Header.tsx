@@ -4,7 +4,7 @@ export interface HeaderProps {
   handleOpenFormModal: () => void;
 }
 
-export default function Header({ handleOpenFormModal }: HeaderProps) {
+export function Header({ handleOpenFormModal }: HeaderProps) {
   return (
     <Button
       aria-label="Menu-Collapse"

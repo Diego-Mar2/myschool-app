@@ -1,6 +1,6 @@
 import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import Header from "../components/Header";
+import { Header } from "../components/Header";
 
 interface StaffsProps {
   Form: (props: any) => React.ReactNode;
@@ -16,7 +16,7 @@ export interface Staff {
   auth_user_id: string;
 }
 
-export default function Staffs({ Form }: StaffsProps) {
+export function Staffs({ Form }: StaffsProps) {
   const {
     data,
     listData,

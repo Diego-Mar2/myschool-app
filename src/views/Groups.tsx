@@ -1,6 +1,6 @@
 import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import Header from "../components/Header";
+import { Header } from "../components/Header";
 
 interface GroupsProps {
   Form: (props: any) => React.ReactNode;
@@ -19,7 +19,7 @@ export interface Group {
 
 type Semester = "1" | "2" | "1-2";
 
-export default function Groups({ Form }: GroupsProps) {
+export function Groups({ Form }: GroupsProps) {
   const {
     data,
     listData,

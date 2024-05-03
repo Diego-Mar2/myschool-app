@@ -19,7 +19,7 @@ interface ClassesFormProps {
   data: any;
 }
 
-export default function ClassesForm({
+export function ClassesForm({
   handleCreate,
   handleUpdateById,
   handleClose,

@@ -1,6 +1,6 @@
 import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import Header from "../components/Header";
+import { Header } from "../components/Header";
 
 interface StudentsProps {
   Form: (props: any) => React.ReactNode;
@@ -18,7 +18,7 @@ export interface Student {
   auth_user_id: string;
 }
 
-export default function Students({ Form }: StudentsProps) {
+export function Students({ Form }: StudentsProps) {
   const {
     data,
     listData,

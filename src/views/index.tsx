@@ -1,17 +1,24 @@
-import ClassesForm from "../components/forms/ClassesForm";
-import CourseForm from "../components/forms/CoursesForm";
-import LocationsForm from "../components/forms/LocationsForm";
-import StaffsForm from "../components/forms/StaffsForm";
-import StudentsForm from "../components/forms/StudentsForm";
-import SubjectForm from "../components/forms/SubjectsForm";
-import Classes from "./Classes";
-import Courses from "./Courses";
-import Groups from "./Groups";
-import Locations from "./Locations";
-import Notifications from "./Notifications";
-import Staffs from "./Staffs";
-import Students from "./Students";
-import Subjects from "./Subjects";
+import { Courses } from "./Courses";
+import { CourseForm } from "../components/forms/CoursesForm";
+
+import { Subjects } from "./Subjects";
+import { SubjectForm } from "../components/forms/SubjectsForm";
+
+import { Classes } from "./Classes";
+import { ClassesForm } from "../components/forms/ClassesForm";
+
+import { Groups } from "./Groups";
+
+import { Students } from "./Students";
+import { StudentsForm } from "../components/forms/StudentsForm";
+
+import { Staffs } from "./Staffs";
+import { StaffsForm } from "../components/forms/StaffsForm";
+
+import { Locations } from "./Locations";
+import { LocationsForm } from "../components/forms/LocationsForm";
+
+import { Notifications } from "./Notifications";
 
 export type SectionName = keyof typeof Sections;
 

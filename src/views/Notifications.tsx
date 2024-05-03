@@ -1,6 +1,6 @@
 import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import Header from "../components/Header";
+import { Header } from "../components/Header";
 
 interface NotificationsProps {
   Form: (props: any) => React.ReactNode;
@@ -15,7 +15,7 @@ export interface Notification {
   staff_name: string;
 }
 
-export default function Notifications({ Form }: NotificationsProps) {
+export function Notifications({ Form }: NotificationsProps) {
   const {
     data,
     listData,

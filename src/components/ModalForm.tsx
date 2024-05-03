@@ -16,7 +16,7 @@ interface ModalProps {
   data: any;
 }
 
-export default function ModalForm({
+export function ModalForm({
   Form,
   handleCreate,
   handleUpdateById,

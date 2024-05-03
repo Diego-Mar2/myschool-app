@@ -11,9 +11,9 @@ import {
   ListItem,
 } from "@chakra-ui/react";
 
-import Header from "../components/Header";
-import SideOver from "../components/SideOver";
-import ModalForm from "../components/ModalForm";
+import { Header } from "../components/Header";
+import { SideOver } from "../components/SideOver";
+import { ModalForm } from "../components/ModalForm";
 
 import { useAuthContext } from "../contexts/AuthContext";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
@@ -34,7 +34,7 @@ export interface Course {
   description: string;
 }
 
-export default function Courses({ Form }: CoursesProps) {
+export function Courses({ Form }: CoursesProps) {
   const [loadingAdditionalInfo, setLoadingAdditionalInfo] = useState(false);
 
   const { session } = useAuthContext();

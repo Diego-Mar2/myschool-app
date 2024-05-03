@@ -31,7 +31,7 @@ interface CourseSubjects {
   semester: number;
 }
 
-export default function CourseForm({
+export function CourseForm({
   handleCreate,
   handleUpdateById,
   handleClose,

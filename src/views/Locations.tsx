@@ -1,6 +1,6 @@
 import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import Header from "../components/Header";
+import { Header } from "../components/Header";
 
 interface LocationsProps {
   Form: (props: any) => React.ReactNode;
@@ -13,7 +13,7 @@ export interface Location {
   classroom: string;
 }
 
-export default function Locations({ Form }: LocationsProps) {
+export function Locations({ Form }: LocationsProps) {
   const {
     data,
     listData,
