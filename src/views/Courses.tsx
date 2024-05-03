@@ -35,7 +35,7 @@ export interface Course {
 }
 
 export default function Courses({ Form }: CoursesProps) {
-  const [loadingAssociations, setLoadingAssociations] = useState(false);
+  const [loadingAdditionalInfo, setLoadingAdditionalInfo] = useState(false);
 
   const { session } = useAuthContext();
 
@@ -57,30 +57,30 @@ export default function Courses({ Form }: CoursesProps) {
   } = useDrawer(data, setData, handleFindById, handleDeleteById);
 
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal();
+    useFormModal(handleCloseDrawer);
 
   useEffect(() => {
-    if (!session?.access_token || !data?.id || data.associations) {
+    if (!session?.access_token || !data?.id || data.additionalData) {
       return;
     }
 
     const fetchCourseSubjects = async () => {
       try {
-        setLoadingAssociations(true);
+        setLoadingAdditionalInfo(true);
 
-        const associations = await findCourseSubjects(
+        const additionalData = await findCourseSubjects(
           session.access_token,
           data.id
         );
 
         setData({
           ...data,
-          associations,
+          additionalData,
         });
       } catch {
         setData(data);
       } finally {
-        setLoadingAssociations(false);
+        setLoadingAdditionalInfo(false);
       }
     };
 
@@ -135,14 +135,14 @@ export default function Courses({ Form }: CoursesProps) {
                 <strong>Descrição:</strong> {data.description}
               </p>
 
-              {(loadingAssociations || data.associations) && (
+              {(loadingAdditionalInfo || data.additionalData) && (
                 <div>
                   <strong>Matérias:</strong>
 
-                  {loadingAssociations && <p>Carregando matérias...</p>}
+                  {loadingAdditionalInfo && <p>Carregando matérias...</p>}
 
                   <List>
-                    {data.associations?.map(({ id, subject, semester }) => (
+                    {data.additionalData?.map(({ id, subject, semester }) => (
                       <ListItem key={id}>
                         {subject.name} - {semester}º Semestre
                       </ListItem>

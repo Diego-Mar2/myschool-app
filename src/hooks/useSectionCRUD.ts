@@ -8,7 +8,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 
 export function useSectionCRUD<T, A = unknown>(path: string) {
   const [listData, setListData] = useState<T[]>([]);
-  const [data, setData] = useState<T & { associations?: A }>();
+  const [data, setData] = useState<T & { additionalData?: A }>();
   const [canFetch, setCanFetch] = useState(true);
 
   const { session } = useAuthContext();

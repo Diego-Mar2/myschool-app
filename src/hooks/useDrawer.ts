@@ -16,8 +16,6 @@ export function useDrawer<T extends { id: number }>(
   function handleCloseDrawer() {
     setIsDrawerOpen(false);
     setData(undefined);
-
-    console.log("aaaaaaa");
   }
 
   async function handleDeleteRegister() {

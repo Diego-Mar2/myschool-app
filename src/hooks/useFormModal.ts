@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useFormModal() {
+export function useFormModal(handleCloseDrawer: () => void) {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
 
   function handleOpenFormModal() {
@@ -8,6 +8,7 @@ export function useFormModal() {
   }
 
   function handleCloseFormModal() {
+    handleCloseDrawer();
     setIsFormModalOpen(false);
   }
 

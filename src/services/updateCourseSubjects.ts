@@ -1,11 +1,12 @@
 import { fetchData } from "./";
 
 export interface UpdateCourseSubjects {
-  course_id: number;
-  subjects: {
-    subject_id: number;
-    semester: number;
-  };
+  subjects: Subject[];
+}
+
+interface Subject {
+  subject_id: number;
+  semester: number;
 }
 
 export async function updateCourseSubjects(
