@@ -13,24 +13,24 @@ import Staffs from "./Staffs";
 import Students from "./Students";
 import Subjects from "./Subjects";
 
-export type SectionName = keyof typeof Sections
+export type SectionName = keyof typeof Sections;
 
 export const Sections = {
   Cursos: {
     component: Courses,
-    form: CourseForm
+    form: CourseForm,
   },
   Matérias: {
     component: Subjects,
-    form: SubjectForm
+    form: SubjectForm,
   },
   Aulas: {
     component: Classes,
-    form: ClassesForm
+    form: ClassesForm,
   },
   Turmas: {
     component: Groups,
-    form: CourseForm
+    form: CourseForm,
   },
   Alunos: {
     component: Students,
@@ -38,16 +38,16 @@ export const Sections = {
   },
   Professores: {
     component: Staffs,
-    form: StaffsForm
+    form: StaffsForm,
   },
-  'Salas de aula': {
+  "Salas de aula": {
     component: Locations,
-    form: LocationsForm
+    form: LocationsForm,
   },
   Notificações: {
     component: Notifications,
-    form: CourseForm
+    form: CourseForm,
   },
-}
+};
 
-export const SectionsNames = Object.keys(Sections) as SectionName[]
+export const SectionsNames = Object.keys(Sections) as SectionName[];

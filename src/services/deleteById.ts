@@ -1,6 +1,7 @@
 import { fetchData } from "./";
 
-export async function deleteById(accessToken: string,
+export async function deleteById(
+  accessToken: string,
   path: string,
   id: number,
 ) {

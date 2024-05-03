@@ -56,9 +56,9 @@ export default function Notifications({ Form }: NotificationsProps) {
         </Thead>
         <Tbody>
           {listData.map(({ id, staff_name, created_at, title, message }) => {
-            const dateObj = new Date(created_at)
-            const formattedDate = dateObj.toLocaleDateString()
-            const formattedTime = dateObj.toLocaleTimeString().substring(0,5)
+            const dateObj = new Date(created_at);
+            const formattedDate = dateObj.toLocaleDateString();
+            const formattedTime = dateObj.toLocaleTimeString().substring(0, 5);
             return (
               <Tr
                 key={id}
@@ -69,7 +69,9 @@ export default function Notifications({ Form }: NotificationsProps) {
               >
                 <Td>{id}</Td>
                 <Td>{staff_name}</Td>
-                <Td>{formattedDate} - {formattedTime}</Td>
+                <Td>
+                  {formattedDate} - {formattedTime}
+                </Td>
                 <Td>{title}</Td>
                 <Td>{message}</Td>
               </Tr>

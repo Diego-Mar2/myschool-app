@@ -86,7 +86,7 @@ export default function Students({ Form }: StudentsProps) {
                 <Td>{course_name}</Td>
                 <Td>{semester}</Td>
               </Tr>
-            )
+            ),
           )}
         </Tbody>
       </Table>

@@ -112,7 +112,7 @@ export default function Classes({ Form }: ClassesProps) {
                   <Td>{end_time.substring(0, 5)}</Td>
                 </Tr>
               );
-            }
+            },
           )}
         </Tbody>
       </Table>

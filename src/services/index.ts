@@ -7,7 +7,7 @@ export const fetchData = (accessToken: string) => {
     baseURL,
     headers: {
       "Content-Type": "application/json",
-      Authorization: accessToken
+      Authorization: accessToken,
     },
   });
 };

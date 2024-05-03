@@ -4,7 +4,7 @@ export function useDrawer<T extends { id: number }>(
   data: T | undefined,
   setData: (data: T | undefined) => void,
   handleFindById: (id: number) => Promise<void>,
-  handleDeleteById: (id: number) => Promise<void>
+  handleDeleteById: (id: number) => Promise<void>,
 ) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 

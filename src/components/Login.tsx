@@ -15,7 +15,7 @@ export const Login = () => {
     const { error } = await supabase.auth.signInWithPassword(body);
 
     if (error) {
-        return alert('Credenciais inválidas')
+      return alert("Credenciais inválidas");
     }
   };
 

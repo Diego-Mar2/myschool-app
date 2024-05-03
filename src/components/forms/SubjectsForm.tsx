@@ -37,7 +37,10 @@ export default function SubjectForm({
 
       <FormControl mt={4} mb={8}>
         <FormLabel>Descrição</FormLabel>
-        <Input {...register("description")} placeholder="Descrição da matéria" />
+        <Input
+          {...register("description")}
+          placeholder="Descrição da matéria"
+        />
       </FormControl>
 
       <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>

@@ -61,22 +61,23 @@ export default function Groups({ Form }: GroupsProps) {
         </Thead>
         <Tbody>
           {listData.map(
-            ({ id, subject_name, name, teacher_name, year, semester }) => (
-              id !== 3 ? <Tr
-                key={id}
-                onClick={() => {
-                  handleFindById(id);
-                }}
-                style={{ cursor: "pointer" }}
-              >
-                <Td>{id}</Td>
-                <Td>{subject_name}</Td>
-                <Td>{name}</Td>
-                <Td>{teacher_name ?? "Professor não atribuído"}</Td>
-                <Td>{year}</Td>
-                <Td>{semester}</Td>
-              </Tr> : null
-            )
+            ({ id, subject_name, name, teacher_name, year, semester }) =>
+              id !== 3 ? (
+                <Tr
+                  key={id}
+                  onClick={() => {
+                    handleFindById(id);
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Td>{id}</Td>
+                  <Td>{subject_name}</Td>
+                  <Td>{name}</Td>
+                  <Td>{teacher_name ?? "Professor não atribuído"}</Td>
+                  <Td>{year}</Td>
+                  <Td>{semester}</Td>
+                </Tr>
+              ) : null,
           )}
         </Tbody>
       </Table>

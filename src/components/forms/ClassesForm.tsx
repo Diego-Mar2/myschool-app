@@ -33,13 +33,21 @@ export default function ClassesForm({
   });
 
   const onSubmit = async (body: Class) => {
-    const [day, month, year] = body.date.split('/');
-    const formattedDate = `${year}-${month}-${day}`
+    const [day, month, year] = body.date.split("/");
+    const formattedDate = `${year}-${month}-${day}`;
 
     if (!data) {
-      await handleCreate({ ...body, course_id: Number(body.id), date: formattedDate });
+      await handleCreate({
+        ...body,
+        course_id: Number(body.id),
+        date: formattedDate,
+      });
     } else {
-      await handleUpdateById(data.id, { ...body, course_id: Number(body.id), date: formattedDate });
+      await handleUpdateById(data.id, {
+        ...body,
+        course_id: Number(body.id),
+        date: formattedDate,
+      });
     }
     handleClose();
   };
@@ -81,11 +89,13 @@ export default function ClassesForm({
               <option value={id}>
                 {subject_name}, {name}
               </option>
-            ) : null
+            ) : null,
           )}
         </Select>
         <FormLabel>Data</FormLabel>
-        <Input as={InputMask} mask="99/99/9999" //verificar ainda esse detalhe de data
+        <Input
+          as={InputMask}
+          mask="99/99/9999" //verificar ainda esse detalhe de data
           {...register("date")}
         />
       </FormControl>

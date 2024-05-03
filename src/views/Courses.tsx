@@ -70,7 +70,7 @@ export default function Courses({ Form }: CoursesProps) {
 
         const additionalData = await findCourseSubjects(
           session.access_token,
-          data.id
+          data.id,
         );
 
         setData({

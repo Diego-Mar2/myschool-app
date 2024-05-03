@@ -12,7 +12,7 @@ interface Subject {
 export async function updateCourseSubjects(
   accessToken: string,
   id: number,
-  body: UpdateCourseSubjects
+  body: UpdateCourseSubjects,
 ) {
   await fetchData(accessToken).put(`/courses/${id}/subjects`, body);
 }

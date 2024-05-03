@@ -37,9 +37,12 @@ export default function LocationsForm({
 
       <FormControl mt={4}>
         <FormLabel>Andar</FormLabel>
-        <Input {...register("floor", {
-          valueAsNumber: true,
-        })} placeholder="Número do andar" />
+        <Input
+          {...register("floor", {
+            valueAsNumber: true,
+          })}
+          placeholder="Número do andar"
+        />
       </FormControl>
 
       <FormControl mt={4} mb={8}>

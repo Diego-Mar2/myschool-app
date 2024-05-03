@@ -11,7 +11,7 @@ export interface CourseSubjects {
 
 export async function findCourseSubjects(
   accessToken: string,
-  id: number
+  id: number,
 ): Promise<CourseSubjects[]> {
   const { data } = await fetchData(accessToken).get(`/courses/${id}/subjects`);
 

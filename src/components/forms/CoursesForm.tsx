@@ -43,11 +43,11 @@ export default function CourseForm({
         subject_id: subject.id,
         name: subject.name,
         semester,
-      })
+      }),
     ) || [];
 
   const [courseSubjects, setCourseSubjects] = useState<CourseSubjects[]>(
-    initialCourseSubjects
+    initialCourseSubjects,
   );
 
   const { session } = useAuthContext();
@@ -99,7 +99,7 @@ export default function CourseForm({
 
   function handleRemoveSubject(subjectId: number) {
     setCourseSubjects((prev) =>
-      prev.filter(({ subject_id }) => subject_id !== subjectId)
+      prev.filter(({ subject_id }) => subject_id !== subjectId),
     );
   }
 

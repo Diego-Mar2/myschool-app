@@ -7,9 +7,9 @@ interface SubjectsProps {
 }
 
 export interface Subject {
-  id: number
-  name: string
-  description: string
+  id: number;
+  name: string;
+  description: string;
 }
 
 export default function Subjects({ Form }: SubjectsProps) {
@@ -50,7 +50,7 @@ export default function Subjects({ Form }: SubjectsProps) {
           </Tr>
         </Thead>
         <Tbody>
-          {listData.map(({id,name,description}) => (
+          {listData.map(({ id, name, description }) => (
             <Tr
               key={id}
               onClick={() => {

@@ -42,7 +42,7 @@ export default function Locations({ Form }: LocationsProps) {
         </Flex>
       )}
 
-<Table variant="striped" colorScheme="teal" size="sm">
+      <Table variant="striped" colorScheme="teal" size="sm">
         <Thead>
           <Tr>
             <Th>ID</Th>
@@ -52,7 +52,7 @@ export default function Locations({ Form }: LocationsProps) {
           </Tr>
         </Thead>
         <Tbody>
-          {listData.map(({id,building,floor,classroom}) => (
+          {listData.map(({ id, building, floor, classroom }) => (
             <Tr
               key={id}
               onClick={() => {

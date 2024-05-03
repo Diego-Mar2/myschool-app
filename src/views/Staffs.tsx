@@ -74,7 +74,7 @@ export default function Staffs({ Form }: StaffsProps) {
                 <Td>{document}</Td>
                 <Td>{is_admin ? "sim" : "não"}</Td>
               </Tr>
-            )
+            ),
           )}
         </Tbody>
       </Table>
