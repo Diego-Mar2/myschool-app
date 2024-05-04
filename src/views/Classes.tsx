@@ -1,7 +1,6 @@
-import { Table, Tr, Td, Th, Tbody, Thead, Grid } from "@chakra-ui/react";
-
 import { Header } from "../components/Header";
-import { SideOver } from "../components/SideOver";
+import { TableSection, type TableRow } from "../components/TableSection";
+import { SlideOver } from "../components/SlideOver";
 import { ModalForm } from "../components/ModalForm";
 
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
@@ -33,6 +32,21 @@ function formatDate(date: string) {
   return dateObj.toLocaleDateString();
 }
 
+function extractData(item: Class): TableRow {
+  return [
+    item.id,
+    item.name,
+    item.description,
+    `${item.location.building}, ${
+      item.location.floor > 0 ? `${item.location.floor} º andar` : "Térreo"
+    }, ${item.location.classroom}`,
+    item.group_id,
+    formatDate(item.date),
+    item.start_time.substring(0, 5),
+    item.end_time.substring(0, 5),
+  ];
+}
+
 export function Classes({ Form }: ClassesProps) {
   const {
     data,
@@ -54,116 +68,47 @@ export function Classes({ Form }: ClassesProps) {
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
     useFormModal(handleCloseDrawer);
 
+  const titles = [
+    "ID",
+    "Aula",
+    "Descrição",
+    "Local",
+    "Turma",
+    "Data",
+    "Início",
+    "Término",
+  ];
+  const tableRows: TableRow[] = listData.map(extractData);
+  const slideOverInfos: TableRow | undefined = data && extractData(data);
+
   return (
     <div>
       <Header handleOpenFormModal={handleOpenFormModal} />
 
-      <Table variant="striped" colorScheme="teal" size="sm">
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Aula</Th>
-            <Th>Descrição</Th>
-            <Th>Local</Th>
-            <Th>Turma</Th>
-            <Th>Data</Th>
-            <Th>Início</Th>
-            <Th>Término</Th>
-          </Tr>
-        </Thead>
+      <TableSection
+        tableTitles={titles}
+        tableRows={tableRows}
+        handleOpenDrawer={handleOpenDrawer}
+      />
 
-        <Tbody>
-          {listData.map(
-            ({
-              id,
-              name,
-              description,
-              location: { building, floor, classroom },
-              group_id,
-              date,
-              start_time,
-              end_time,
-            }) => (
-              <Tr
-                key={id}
-                onClick={() => {
-                  handleOpenDrawer(id);
-                }}
-                cursor="pointer"
-              >
-                <Td>{id}</Td>
-                <Td>{name}</Td>
-                <Td>{description}</Td>
-                <Td>
-                  {building}, {floor > 0 ? `${floor} º andar` : "Térreo"},{" "}
-                  {classroom}
-                </Td>
-                <Td>{group_id}</Td>
-                <Td>{formatDate(date)}</Td>
-                <Td>{start_time.substring(0, 5)}</Td>
-                <Td>{end_time.substring(0, 5)}</Td>
-              </Tr>
-            ),
-          )}
+      <SlideOver
+        isOpen={isDrawerOpen}
+        title="Detalhes da Aula"
+        slideOverTitles={titles}
+        slideOverInfos={slideOverInfos}
+        onClose={handleCloseDrawer}
+        handleOpenFormModal={handleOpenFormModal}
+        handleDelete={handleDeleteRegister}
+      />
 
-          {isDrawerOpen && (
-            <SideOver
-              title="Detalhes da Matéria"
-              isOpen={isDrawerOpen}
-              onClose={handleCloseDrawer}
-              handleOpenFormModal={handleOpenFormModal}
-              handleDelete={handleDeleteRegister}
-            >
-              {!data && <p>Carregando...</p>}
-
-              {data && (
-                <Grid gap={5}>
-                  <p>
-                    <strong>ID:</strong> {data.id}
-                  </p>
-                  <p>
-                    <strong>Aula:</strong> {data.name}
-                  </p>
-                  <p>
-                    <strong>Descrição:</strong> {data.description}
-                  </p>
-
-                  <p>
-                    <strong>Local:</strong> {data.location.building},{" "}
-                    {data.location.floor > 0
-                      ? `${data.location.floor} º andar`
-                      : "Térreo"}
-                    , {data.location.classroom}
-                  </p>
-                  <p>
-                    <strong>Turma:</strong> {data.group_id}
-                  </p>
-                  <p>
-                    <strong>Data:</strong> {formatDate(data.date)}
-                  </p>
-                  <p>
-                    <strong>Início:</strong> {data.start_time.substring(0, 5)}
-                  </p>
-                  <p>
-                    <strong>Término:</strong> {data.end_time.substring(0, 5)}
-                  </p>
-                </Grid>
-              )}
-            </SideOver>
-          )}
-
-          {isFormModalOpen && (
-            <ModalForm
-              isOpen={isFormModalOpen}
-              data={data}
-              handleCreate={handleCreate}
-              handleUpdateById={handleUpdateById}
-              onClose={handleCloseFormModal}
-              Form={Form}
-            />
-          )}
-        </Tbody>
-      </Table>
+      <ModalForm
+        isOpen={isFormModalOpen}
+        data={data}
+        handleCreate={handleCreate}
+        handleUpdateById={handleUpdateById}
+        onClose={handleCloseFormModal}
+        Form={Form}
+      />
     </div>
   );
 }

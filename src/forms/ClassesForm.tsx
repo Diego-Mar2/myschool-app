@@ -6,10 +6,10 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { Class } from "../../views/Classes";
-import { useSectionCRUD } from "../../hooks/useSectionCRUD";
-import { Location } from "../../views/Locations";
-import { Group } from "../../views/Groups";
+import { Class } from "../views/Classes";
+import { useSectionCRUD } from "../hooks/useSectionCRUD";
+import { Location } from "../views/Locations";
+import { Group } from "../views/Groups";
 import InputMask from "react-input-mask";
 
 interface ClassesFormProps {

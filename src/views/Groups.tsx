@@ -1,6 +1,11 @@
-import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
-import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import { Header } from "../components/Header";
+import { TableSection, type TableRow } from "../components/TableSection";
+import { SlideOver } from "../components/SlideOver";
+import { ModalForm } from "../components/ModalForm";
+
+import { useSectionCRUD } from "../hooks/useSectionCRUD";
+import { useDrawer } from "../hooks/useDrawer";
+import { useFormModal } from "../hooks/useFormModal";
 
 interface GroupsProps {
   Form: (props: any) => React.ReactNode;
@@ -19,68 +24,74 @@ export interface Group {
 
 type Semester = "1" | "2" | "1-2";
 
+function extractData(item?: Group): TableRow {
+  if (!item || item.id === 3) {
+    return null;
+  }
+
+  return [
+    item.id,
+    item.subject_name,
+    item.name,
+    item.teacher_name ?? "Professor não atribuído",
+    item.year,
+    item.semester,
+  ];
+}
+
 export function Groups({ Form }: GroupsProps) {
   const {
     data,
+    setData,
     listData,
     handleFindById,
     handleDeleteById,
     handleCreate,
     handleUpdateById,
   } = useSectionCRUD<Group>("/groups");
+
+  const {
+    isDrawerOpen,
+    handleOpenDrawer,
+    handleCloseDrawer,
+    handleDeleteRegister,
+  } = useDrawer(data, setData, handleFindById, handleDeleteById);
+
+  const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
+    useFormModal(handleCloseDrawer);
+
+  const titles = ["ID", "Matéria", "Turma", "Professor", "Ano", "Semestre"];
+  const tableRows: TableRow[] = listData.map(extractData);
+  const slideOverInfos: TableRow | undefined = extractData(data);
+
   return (
     <div>
-      <Header
-        Form={Form}
+      <Header handleOpenFormModal={handleOpenFormModal} />
+
+      <TableSection
+        tableTitles={titles}
+        tableRows={tableRows}
+        handleOpenDrawer={handleOpenDrawer}
+      />
+
+      <SlideOver
+        isOpen={isDrawerOpen}
+        title="Detalhes da Turma"
+        slideOverTitles={titles}
+        slideOverInfos={slideOverInfos}
+        onClose={handleCloseDrawer}
+        handleOpenFormModal={handleOpenFormModal}
+        handleDelete={handleDeleteRegister}
+      />
+
+      <ModalForm
+        isOpen={isFormModalOpen}
+        data={data}
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
-        data={data}
+        onClose={handleCloseFormModal}
+        Form={Form}
       />
-      {data && (
-        <Flex>
-          {JSON.stringify(data)}
-          <button
-            style={{ background: "red" }}
-            onClick={() => handleDeleteById(data.id)}
-          >
-            deletar registro
-          </button>
-        </Flex>
-      )}
-
-      <Table variant="striped" colorScheme="teal" size="sm">
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Matéria</Th>
-            <Th>Turma</Th>
-            <Th>Professor</Th>
-            <Th>Ano</Th>
-            <Th>Semestre</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {listData.map(
-            ({ id, subject_name, name, teacher_name, year, semester }) =>
-              id !== 3 ? (
-                <Tr
-                  key={id}
-                  onClick={() => {
-                    handleFindById(id);
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  <Td>{id}</Td>
-                  <Td>{subject_name}</Td>
-                  <Td>{name}</Td>
-                  <Td>{teacher_name ?? "Professor não atribuído"}</Td>
-                  <Td>{year}</Td>
-                  <Td>{semester}</Td>
-                </Tr>
-              ) : null,
-          )}
-        </Tbody>
-      </Table>
     </div>
   );
 }

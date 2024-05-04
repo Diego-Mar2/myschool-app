@@ -1,6 +1,6 @@
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { Location } from "../../views/Locations";
+import { Location } from "../views/Locations";
 
 interface LocationsFormProps {
   handleCreate: (body: object) => Promise<void>;

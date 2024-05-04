@@ -3,36 +3,42 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Switch,
+  Select,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
-import type { Staff } from "../../views/Staffs";
+import { useSectionCRUD } from "../hooks/useSectionCRUD";
 
-interface StaffsFormProps {
+import type { Student } from "../views/Students";
+import type { Course } from "../views/Courses";
+
+interface StudentsFormProps {
   handleCreate: (body: object) => Promise<void>;
   handleUpdateById: (id: number, body: object) => Promise<void>;
   handleClose: () => void;
   data: any;
 }
 
-export function StaffsForm({
+export function StudentsForm({
   handleCreate,
   handleUpdateById,
   handleClose,
   data,
-}: StaffsFormProps) {
-  const { register, handleSubmit } = useForm<Staff>({
+}: StudentsFormProps) {
+  const { listData } = useSectionCRUD<Course>("/courses");
+  const { register, handleSubmit } = useForm<Student>({
     defaultValues: data,
   });
 
-  const onSubmit = async (body: Staff) => {
+  const onSubmit = async (body: Student) => {
     if (!data) {
-      await handleCreate({ ...body, course_id: Number(body.id) });
+      await handleCreate({ ...body, course_id: Number(body.course_id) });
     } else {
-      await handleUpdateById(data.id, { ...body, course_id: Number(body.id) });
+      await handleUpdateById(data.id, {
+        ...body,
+        course_id: Number(body.course_id),
+      });
     }
-
     handleClose();
   };
 
@@ -60,13 +66,33 @@ export function StaffsForm({
         <Input {...register("document")} />
       </FormControl>
 
+      <FormControl mt={4}>
+        <FormLabel>Curso</FormLabel>
+        <Select
+          {...register("course_id", {
+            valueAsNumber: true,
+          })}
+          placeholder="Selecione o curso"
+        >
+          {listData.map(({ id, name }) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+
       <FormControl mt={4} mb={8}>
-        <FormLabel>Permissão pra administração?</FormLabel>
-        <Switch id="isAdmin" {...register("is_admin")} />
+        <FormLabel>Semestre</FormLabel>
+        <Input
+          {...register("semester", {
+            valueAsNumber: true,
+          })}
+        />
       </FormControl>
 
       <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        Adicionar colaborador
+        Adicionar aluno
       </Button>
       <Button onClick={handleClose}>Cancelar</Button>
     </>

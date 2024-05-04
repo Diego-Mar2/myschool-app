@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HStack } from "@chakra-ui/react";
 
-import { Login } from "./components/Login";
+import { Login } from "./views/Login";
 import { Sidebar } from "./components/Sidebar";
 import { Main } from "./components/Main";
 

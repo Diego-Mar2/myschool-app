@@ -1,22 +1,22 @@
 import { Courses } from "./Courses";
-import { CourseForm } from "../components/forms/CoursesForm";
+import { CourseForm } from "../forms/CoursesForm";
 
 import { Subjects } from "./Subjects";
-import { SubjectForm } from "../components/forms/SubjectsForm";
+import { SubjectForm } from "../forms/SubjectsForm";
 
 import { Classes } from "./Classes";
-import { ClassesForm } from "../components/forms/ClassesForm";
+import { ClassesForm } from "../forms/ClassesForm";
 
 import { Groups } from "./Groups";
 
 import { Students } from "./Students";
-import { StudentsForm } from "../components/forms/StudentsForm";
+import { StudentsForm } from "../forms/StudentsForm";
 
 import { Staffs } from "./Staffs";
-import { StaffsForm } from "../components/forms/StaffsForm";
+import { StaffsForm } from "../forms/StaffsForm";
 
 import { Locations } from "./Locations";
-import { LocationsForm } from "../components/forms/LocationsForm";
+import { LocationsForm } from "../forms/LocationsForm";
 
 import { Notifications } from "./Notifications";
 

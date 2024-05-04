@@ -1,6 +1,11 @@
-import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
-import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import { Header } from "../components/Header";
+import { TableSection, type TableRow } from "../components/TableSection";
+import { SlideOver } from "../components/SlideOver";
+import { ModalForm } from "../components/ModalForm";
+
+import { useSectionCRUD } from "../hooks/useSectionCRUD";
+import { useDrawer } from "../hooks/useDrawer";
+import { useFormModal } from "../hooks/useFormModal";
 
 interface NotificationsProps {
   Form: (props: any) => React.ReactNode;
@@ -15,70 +20,82 @@ export interface Notification {
   staff_name: string;
 }
 
+function formatDate(date: string) {
+  const dateObj = new Date(date);
+
+  const formattedDate = dateObj.toLocaleDateString();
+  const formattedTime = dateObj.toLocaleTimeString().substring(0, 5);
+
+  return `${formattedDate} - ${formattedTime}`;
+}
+
+function extractData(item?: Notification): TableRow {
+  if (!item) {
+    return null;
+  }
+
+  return [
+    item.id,
+    item.staff_name,
+    formatDate(item.created_at),
+    item.title,
+    item.message,
+  ];
+}
+
 export function Notifications({ Form }: NotificationsProps) {
   const {
     data,
+    setData,
     listData,
     handleFindById,
     handleDeleteById,
     handleCreate,
     handleUpdateById,
   } = useSectionCRUD<Notification>("/notifications");
+
+  const {
+    isDrawerOpen,
+    handleOpenDrawer,
+    handleCloseDrawer,
+    handleDeleteRegister,
+  } = useDrawer(data, setData, handleFindById, handleDeleteById);
+
+  const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
+    useFormModal(handleCloseDrawer);
+
+  const titles = ["ID", "Professor", "Criado em", "Título", "Descrição"];
+  const tableRows: TableRow[] = listData.map(extractData);
+  const slideOverInfos: TableRow | undefined = extractData(data);
+
   return (
     <div>
-      <Header
-        Form={Form}
+      <Header handleOpenFormModal={handleOpenFormModal} />
+
+      <TableSection
+        tableTitles={titles}
+        tableRows={tableRows}
+        handleOpenDrawer={handleOpenDrawer}
+      />
+
+      <SlideOver
+        isOpen={isDrawerOpen}
+        title="Detalhes da Notificação"
+        slideOverTitles={titles}
+        slideOverInfos={slideOverInfos}
+        onClose={handleCloseDrawer}
+        handleOpenFormModal={handleOpenFormModal}
+        handleDelete={handleDeleteRegister}
+      />
+
+      <ModalForm
+        isOpen={isFormModalOpen}
+        data={data}
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
-        data={data}
+        onClose={handleCloseFormModal}
+        Form={Form}
       />
-      {data && (
-        <Flex>
-          {JSON.stringify(data)}
-          <button
-            style={{ background: "red" }}
-            onClick={() => handleDeleteById(data.id)}
-          >
-            deletar registro
-          </button>
-        </Flex>
-      )}
-
-      <Table variant="striped" colorScheme="teal" size="sm">
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Professor</Th>
-            <Th>Criado em</Th>
-            <Th>Título</Th>
-            <Th>Descrição</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {listData.map(({ id, staff_name, created_at, title, message }) => {
-            const dateObj = new Date(created_at);
-            const formattedDate = dateObj.toLocaleDateString();
-            const formattedTime = dateObj.toLocaleTimeString().substring(0, 5);
-            return (
-              <Tr
-                key={id}
-                onClick={() => {
-                  handleFindById(id);
-                }}
-                style={{ cursor: "pointer" }}
-              >
-                <Td>{id}</Td>
-                <Td>{staff_name}</Td>
-                <Td>
-                  {formattedDate} - {formattedTime}
-                </Td>
-                <Td>{title}</Td>
-                <Td>{message}</Td>
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
     </div>
   );
 }

@@ -1,18 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-  Table,
-  Tr,
-  Td,
-  Th,
-  Tbody,
-  Thead,
-  Grid,
-  List,
-  ListItem,
-} from "@chakra-ui/react";
+import { Grid, List, ListItem } from "@chakra-ui/react";
 
 import { Header } from "../components/Header";
-import { SideOver } from "../components/SideOver";
+import { TableSection, type TableRow } from "../components/TableSection";
+import { SlideOver } from "../components/SlideOver";
 import { ModalForm } from "../components/ModalForm";
 
 import { useAuthContext } from "../contexts/AuthContext";
@@ -21,7 +12,7 @@ import { useDrawer } from "../hooks/useDrawer";
 import { useFormModal } from "../hooks/useFormModal";
 import {
   findCourseSubjects,
-  CourseSubjects,
+  type CourseSubjects,
 } from "../services/findCourseSubjects";
 
 interface CoursesProps {
@@ -32,6 +23,14 @@ export interface Course {
   id: number;
   name: string;
   description: string;
+}
+
+function extractData(item?: Course): TableRow {
+  if (!item) {
+    return null;
+  }
+
+  return [item.id, item.name, item.description];
 }
 
 export function Courses({ Form }: CoursesProps) {
@@ -59,6 +58,10 @@ export function Courses({ Form }: CoursesProps) {
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
     useFormModal(handleCloseDrawer);
 
+  const titles = ["ID", "Nome do Curso", "Descrição"];
+  const tableRows: TableRow[] = listData.map(extractData);
+  const slideOverInfos: TableRow | undefined = extractData(data);
+
   useEffect(() => {
     if (!session?.access_token || !data?.id || data.additionalData) {
       return;
@@ -85,86 +88,54 @@ export function Courses({ Form }: CoursesProps) {
     };
 
     fetchCourseSubjects();
-  }, [JSON.stringify(data)]);
+  }, [data]);
 
   return (
     <div>
       <Header handleOpenFormModal={handleOpenFormModal} />
 
-      <Table variant="striped" colorScheme="teal" size="sm">
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Nome do Curso</Th>
-            <Th>Descrição</Th>
-          </Tr>
-        </Thead>
+      <TableSection
+        tableTitles={titles}
+        tableRows={tableRows}
+        handleOpenDrawer={handleOpenDrawer}
+      />
 
-        <Tbody>
-          {listData.map(({ id, name, description }) => (
-            <Tr key={id} onClick={() => handleOpenDrawer(id)} cursor="pointer">
-              <Td>{id}</Td>
-              <Td>{name}</Td>
-              <Td>{description}</Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
+      <SlideOver
+        isOpen={isDrawerOpen}
+        title="Detalhes do Curso"
+        slideOverTitles={titles}
+        slideOverInfos={slideOverInfos}
+        onClose={handleCloseDrawer}
+        handleOpenFormModal={handleOpenFormModal}
+        handleDelete={handleDeleteRegister}
+      >
+        <Grid gap={5}>
+          {(loadingAdditionalInfo || data?.additionalData) && (
+            <div>
+              <strong>Matérias:</strong>
 
-      {isDrawerOpen && (
-        <SideOver
-          title="Detalhes do Curso"
-          isOpen={isDrawerOpen}
-          onClose={handleCloseDrawer}
-          handleOpenFormModal={handleOpenFormModal}
-          handleDelete={handleDeleteRegister}
-        >
-          {!data && <p>Carregando...</p>}
+              {loadingAdditionalInfo && <p>Carregando matérias...</p>}
 
-          {data && (
-            <Grid gap={5}>
-              <p>
-                <strong>ID:</strong> {data.id}
-              </p>
-
-              <p>
-                <strong>Nome:</strong> {data.name}
-              </p>
-
-              <p>
-                <strong>Descrição:</strong> {data.description}
-              </p>
-
-              {(loadingAdditionalInfo || data.additionalData) && (
-                <div>
-                  <strong>Matérias:</strong>
-
-                  {loadingAdditionalInfo && <p>Carregando matérias...</p>}
-
-                  <List>
-                    {data.additionalData?.map(({ id, subject, semester }) => (
-                      <ListItem key={id}>
-                        {subject.name} - {semester}º Semestre
-                      </ListItem>
-                    ))}
-                  </List>
-                </div>
-              )}
-            </Grid>
+              <List>
+                {data?.additionalData?.map(({ id, subject, semester }) => (
+                  <ListItem key={id}>
+                    {subject.name} - {semester}º Semestre
+                  </ListItem>
+                ))}
+              </List>
+            </div>
           )}
-        </SideOver>
-      )}
+        </Grid>
+      </SlideOver>
 
-      {isFormModalOpen && (
-        <ModalForm
-          isOpen={isFormModalOpen}
-          data={data}
-          handleCreate={handleCreate}
-          handleUpdateById={handleUpdateById}
-          onClose={handleCloseFormModal}
-          Form={Form}
-        />
-      )}
+      <ModalForm
+        isOpen={isFormModalOpen}
+        data={data}
+        handleCreate={handleCreate}
+        handleUpdateById={handleUpdateById}
+        onClose={handleCloseFormModal}
+        Form={Form}
+      />
     </div>
   );
 }

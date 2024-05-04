@@ -10,13 +10,13 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
-import { useAuthContext } from "../../contexts/AuthContext";
-import { useSectionCRUD } from "../../hooks/useSectionCRUD";
-import { updateCourseSubjects } from "../../services/updateCourseSubjects";
+import { useAuthContext } from "../contexts/AuthContext";
+import { useSectionCRUD } from "../hooks/useSectionCRUD";
+import { updateCourseSubjects } from "../services/updateCourseSubjects";
 
-import type { CourseSubjects as CourseSubjectsResponse } from "../../services/findCourseSubjects";
-import type { Course } from "../../views/Courses";
-import type { Subject } from "../../views/Subjects";
+import type { CourseSubjects as CourseSubjectsResponse } from "../services/findCourseSubjects";
+import type { Course } from "../views/Courses";
+import type { Subject } from "../views/Subjects";
 
 interface CourseFormProps {
   handleCreate: (body: object) => Promise<void>;

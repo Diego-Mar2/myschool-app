@@ -1,6 +1,6 @@
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { Subject } from "../../views/Subjects";
+import { Subject } from "../views/Subjects";
 
 interface SubjectFormProps {
   handleCreate: (body: object) => Promise<void>;

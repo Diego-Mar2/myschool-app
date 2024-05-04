@@ -1,7 +1,6 @@
-import { Table, Tr, Td, Th, Tbody, Thead, Grid } from "@chakra-ui/react";
-
 import { Header } from "../components/Header";
-import { SideOver } from "../components/SideOver";
+import { TableSection, type TableRow } from "../components/TableSection";
+import { SlideOver } from "../components/SlideOver";
 import { ModalForm } from "../components/ModalForm";
 
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
@@ -16,6 +15,14 @@ export interface Subject {
   id: number;
   name: string;
   description: string;
+}
+
+function extractData(item?: Subject): TableRow {
+  if (!item) {
+    return null;
+  }
+
+  return [item.id, item.name, item.description];
 }
 
 export function Subjects({ Form }: SubjectsProps) {
@@ -39,74 +46,38 @@ export function Subjects({ Form }: SubjectsProps) {
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
     useFormModal(handleCloseDrawer);
 
+  const titles = ["ID", "Nome da Matéria", "Descrição"];
+  const tableRows: TableRow[] = listData.map(extractData);
+  const slideOverInfos: TableRow | undefined = extractData(data);
+
   return (
     <div>
       <Header handleOpenFormModal={handleOpenFormModal} />
 
-      <Table variant="striped" colorScheme="teal" size="sm">
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Nome da Matéria</Th>
-            <Th>Descrição</Th>
-          </Tr>
-        </Thead>
+      <TableSection
+        tableTitles={titles}
+        tableRows={tableRows}
+        handleOpenDrawer={handleOpenDrawer}
+      />
 
-        <Tbody>
-          {listData.map(({ id, name, description }) => (
-            <Tr
-              key={id}
-              onClick={() => {
-                handleOpenDrawer(id);
-              }}
-              cursor="pointer"
-            >
-              <Td>{id}</Td>
-              <Td>{name}</Td>
-              <Td>{description}</Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
+      <SlideOver
+        isOpen={isDrawerOpen}
+        title="Detalhes da Matéria"
+        slideOverTitles={titles}
+        slideOverInfos={slideOverInfos}
+        onClose={handleCloseDrawer}
+        handleOpenFormModal={handleOpenFormModal}
+        handleDelete={handleDeleteRegister}
+      />
 
-      {isDrawerOpen && (
-        <SideOver
-          title="Detalhes da Matéria"
-          isOpen={isDrawerOpen}
-          onClose={handleCloseDrawer}
-          handleOpenFormModal={handleOpenFormModal}
-          handleDelete={handleDeleteRegister}
-        >
-          {!data && <p>Carregando...</p>}
-
-          {data && (
-            <Grid gap={5}>
-              <p>
-                <strong>ID:</strong> {data.id}
-              </p>
-
-              <p>
-                <strong>Nome:</strong> {data.name}
-              </p>
-
-              <p>
-                <strong>Descrição:</strong> {data.description}
-              </p>
-            </Grid>
-          )}
-        </SideOver>
-      )}
-
-      {isFormModalOpen && (
-        <ModalForm
-          isOpen={isFormModalOpen}
-          data={data}
-          handleCreate={handleCreate}
-          handleUpdateById={handleUpdateById}
-          onClose={handleCloseFormModal}
-          Form={Form}
-        />
-      )}
+      <ModalForm
+        isOpen={isFormModalOpen}
+        data={data}
+        handleCreate={handleCreate}
+        handleUpdateById={handleUpdateById}
+        onClose={handleCloseFormModal}
+        Form={Form}
+      />
     </div>
   );
 }
