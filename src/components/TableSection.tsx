@@ -13,8 +13,6 @@ export function TableSection({
   tableRows,
   handleOpenDrawer,
 }: TableSectionProps) {
-  console.log("tableRows", tableRows);
-
   return (
     <Table variant="striped" colorScheme="teal" size="sm">
       <Thead>

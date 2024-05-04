@@ -25,12 +25,14 @@ export interface Course {
   description: string;
 }
 
-function extractData(item?: Course): TableRow {
+function extractData(isList: boolean, item?: Course): TableRow {
   if (!item) {
     return null;
   }
 
-  return [item.id, item.name, item.description];
+  const result: TableRow = [item.id, item.name, item.description];
+
+  return isList ? [...result, "..."] : result;
 }
 
 export function Courses({ Form }: CoursesProps) {
@@ -59,8 +61,8 @@ export function Courses({ Form }: CoursesProps) {
     useFormModal(handleCloseDrawer);
 
   const titles = ["ID", "Nome do Curso", "Descrição"];
-  const tableRows: TableRow[] = listData.map(extractData);
-  const slideOverInfos: TableRow | undefined = extractData(data);
+  const tableRows: TableRow[] = listData.map((item) => extractData(true, item));
+  const slideOverInfos: TableRow | undefined = extractData(false, data);
 
   useEffect(() => {
     if (!session?.access_token || !data?.id || data.additionalData) {
@@ -95,7 +97,7 @@ export function Courses({ Form }: CoursesProps) {
       <Header handleOpenFormModal={handleOpenFormModal} />
 
       <TableSection
-        tableTitles={titles}
+        tableTitles={[...titles, "Matérias"]}
         tableRows={tableRows}
         handleOpenDrawer={handleOpenDrawer}
       />
@@ -105,6 +107,7 @@ export function Courses({ Form }: CoursesProps) {
         title="Detalhes do Curso"
         slideOverTitles={titles}
         slideOverInfos={slideOverInfos}
+        loadingAdditionalInfo={loadingAdditionalInfo}
         onClose={handleCloseDrawer}
         handleOpenFormModal={handleOpenFormModal}
         handleDelete={handleDeleteRegister}
@@ -131,10 +134,10 @@ export function Courses({ Form }: CoursesProps) {
       <ModalForm
         isOpen={isFormModalOpen}
         data={data}
+        Form={Form}
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
-        onClose={handleCloseFormModal}
-        Form={Form}
+        handleCloseFormModal={handleCloseFormModal}
       />
     </div>
   );

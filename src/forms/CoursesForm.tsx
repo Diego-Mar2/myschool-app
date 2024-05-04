@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Flex,
@@ -14,15 +14,18 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import { updateCourseSubjects } from "../services/updateCourseSubjects";
 
+import type { PropsWithChildren } from "react";
 import type { CourseSubjects as CourseSubjectsResponse } from "../services/findCourseSubjects";
 import type { Course } from "../views/Courses";
 import type { Subject } from "../views/Subjects";
 
+type Data = Course & { additionalData?: CourseSubjectsResponse[] };
+
 interface CourseFormProps {
-  handleCreate: (body: object) => Promise<void>;
-  handleUpdateById: (id: number, body: object) => Promise<void>;
-  handleClose: () => void;
-  data: any;
+  data?: Data;
+  handleCreate: (body: Course) => Promise<void>;
+  handleUpdateById: (id: number, body: Course) => Promise<void>;
+  handleCloseFormModal: () => void;
 }
 
 interface CourseSubjects {
@@ -32,11 +35,12 @@ interface CourseSubjects {
 }
 
 export function CourseForm({
+  data,
   handleCreate,
   handleUpdateById,
-  handleClose,
-  data,
-}: CourseFormProps) {
+  handleCloseFormModal,
+  children,
+}: PropsWithChildren<CourseFormProps>) {
   const initialCourseSubjects: CourseSubjects[] =
     (data?.additionalData as CourseSubjectsResponse[] | undefined)?.map(
       ({ subject, semester }) => ({
@@ -63,13 +67,15 @@ export function CourseForm({
     } else {
       await Promise.all([
         handleUpdateById(data.id, body),
-        updateCourseSubjects(session?.access_token ?? "", data.id, {
-          subjects: courseSubjects.map(({ name, ...rest }) => rest),
-        }),
+        courseSubjects.length > 0
+          ? updateCourseSubjects(session?.access_token!, data.id, {
+              subjects: courseSubjects.map(({ name, ...rest }) => rest),
+            })
+          : undefined,
       ]);
     }
 
-    handleClose();
+    handleCloseFormModal();
   };
 
   const handleSemesterChange = (index: number, value: number) => {
@@ -104,86 +110,82 @@ export function CourseForm({
   }
 
   return (
-    <>
-      <FormControl onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{ display: "grid", gap: "16px" }}
+    >
+      <FormControl isRequired>
         <FormLabel>Nome</FormLabel>
         <Input {...register("name")} placeholder="Nome do curso" />
       </FormControl>
 
-      <FormControl mt={4} mb={8}>
+      <FormControl isRequired>
         <FormLabel>Descrição</FormLabel>
         <Input {...register("description")} placeholder="Descrição do curso" />
       </FormControl>
 
       {data && (
         <>
-          <FormControl mt={4}>
+          <FormControl>
             <FormLabel>Matérias</FormLabel>
 
-            <FormControl mt={4}>
-              <FormLabel>Adicionar matérias</FormLabel>
-              <Select
-                placeholder="Selecione a matéria"
-                onChange={handleAddSubject}
-                mb={2}
-              >
-                {listData.map(({ id, name }) => {
-                  if (
-                    id === 3 ||
-                    courseSubjects.find(({ subject_id }) => subject_id === id)
-                  ) {
-                    return null;
-                  }
+            <Select
+              placeholder="Selecione a matéria"
+              onChange={handleAddSubject}
+            >
+              {listData.map(({ id, name }) => {
+                if (
+                  id === 3 ||
+                  courseSubjects.find(({ subject_id }) => subject_id === id)
+                ) {
+                  return null;
+                }
 
-                  return (
-                    <option key={id} value={id}>
-                      {name}
-                    </option>
-                  );
-                })}
-              </Select>
-            </FormControl>
-
-            <Grid gap={4}>
-              {courseSubjects.map(({ subject_id, name, semester }, index) => (
-                <Flex key={subject_id} align="center" justify="space-between">
-                  <FormLabel m={0}>{name}</FormLabel>
-
-                  <Flex align="center">
-                    <FormLabel m={0} mr={2}>
-                      Semestre:
-                    </FormLabel>
-
-                    <Input
-                      type="number"
-                      min={1}
-                      max={6}
-                      defaultValue={semester}
-                      onChange={(e) =>
-                        handleSemesterChange(index, Number(e.target.value))
-                      }
-                    />
-
-                    <Button
-                      colorScheme="red"
-                      ml={2}
-                      onClick={() => handleRemoveSubject(subject_id)}
-                    >
-                      Remover
-                    </Button>
-                  </Flex>
-                </Flex>
-              ))}
-            </Grid>
+                return (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                );
+              })}
+            </Select>
           </FormControl>
+
+          <Grid gap={4}>
+            {courseSubjects.map(({ subject_id, name, semester }, index) => (
+              <Flex key={subject_id} align="center" justify="space-between">
+                <FormLabel m={0}>{name}</FormLabel>
+
+                <Flex align="center">
+                  <FormLabel m={0} mr={2}>
+                    Semestre:
+                  </FormLabel>
+
+                  <Input
+                    type="number"
+                    min={1}
+                    max={6}
+                    isRequired
+                    defaultValue={semester}
+                    onChange={(e) =>
+                      handleSemesterChange(index, Number(e.target.value))
+                    }
+                  />
+
+                  <Button
+                    colorScheme="red"
+                    ml={2}
+                    onClick={() => handleRemoveSubject(subject_id)}
+                  >
+                    Remover
+                  </Button>
+                </Flex>
+              </Flex>
+            ))}
+          </Grid>
         </>
       )}
 
-      <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        {data ? "Editar curso" : "Criar curso"}
-      </Button>
-
-      <Button onClick={handleClose}>Cancelar</Button>
-    </>
+      {children}
+    </form>
   );
 }

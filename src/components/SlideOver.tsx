@@ -18,6 +18,7 @@ interface SlideOverProps {
   title: string;
   slideOverTitles: string[];
   slideOverInfos?: TableRow;
+  loadingAdditionalInfo?: boolean;
   onClose: () => void;
   handleOpenFormModal: () => void;
   handleDelete: () => Promise<void>;
@@ -28,6 +29,7 @@ export function SlideOver({
   title,
   slideOverTitles,
   slideOverInfos,
+  loadingAdditionalInfo,
   onClose,
   handleOpenFormModal,
   handleDelete,
@@ -64,7 +66,7 @@ export function SlideOver({
             onClick={handleOpenFormModal}
             colorScheme="yellow"
             variant="outline"
-            isDisabled={!slideOverInfos}
+            isDisabled={loadingAdditionalInfo ?? !slideOverInfos}
             _disabled={{ cursor: "wait" }}
           >
             Editar
@@ -74,7 +76,7 @@ export function SlideOver({
             onClick={handleDelete}
             color="red"
             variant="outline"
-            isDisabled={!slideOverInfos}
+            isDisabled={loadingAdditionalInfo ?? !slideOverInfos}
             _disabled={{ cursor: "wait" }}
           >
             Deletar
