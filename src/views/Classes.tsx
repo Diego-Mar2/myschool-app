@@ -104,10 +104,10 @@ export function Classes({ Form }: ClassesProps) {
       <ModalForm
         isOpen={isFormModalOpen}
         data={data}
+        Form={Form}
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
-        onClose={handleCloseFormModal}
-        Form={Form}
+        handleCloseFormModal={handleCloseFormModal}
       />
     </div>
   );

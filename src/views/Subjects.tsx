@@ -73,10 +73,10 @@ export function Subjects({ Form }: SubjectsProps) {
       <ModalForm
         isOpen={isFormModalOpen}
         data={data}
+        Form={Form}
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
-        onClose={handleCloseFormModal}
-        Form={Form}
+        handleCloseFormModal={handleCloseFormModal}
       />
     </div>
   );

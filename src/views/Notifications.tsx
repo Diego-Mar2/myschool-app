@@ -91,10 +91,10 @@ export function Notifications({ Form }: NotificationsProps) {
       <ModalForm
         isOpen={isFormModalOpen}
         data={data}
+        Form={Form}
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
-        onClose={handleCloseFormModal}
-        Form={Form}
+        handleCloseFormModal={handleCloseFormModal}
       />
     </div>
   );
