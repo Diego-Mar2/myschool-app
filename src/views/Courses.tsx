@@ -109,7 +109,7 @@ export function Courses({ Form }: CoursesProps) {
         handleOpenFormModal={handleOpenFormModal}
         handleDelete={handleDeleteRegister}
       >
-        <Grid gap={5}>
+        <Grid gap={5} mt={5}>
           {(loadingAdditionalInfo || data?.additionalData) && (
             <div>
               <strong>Matérias:</strong>
