@@ -29,6 +29,7 @@ interface CourseFormProps {
   handleUpdateById: (id: number, body: Course) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
+  handleSubmitForm: () => void;
 }
 
 interface CourseSubjects {
@@ -43,6 +44,7 @@ export function CourseForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
+  handleSubmitForm,
   children,
 }: PropsWithChildren<CourseFormProps>) {
   const initialCourseSubjects: CourseSubjects[] =
@@ -64,6 +66,8 @@ export function CourseForm({
   });
 
   const onSubmit = async (body: Course) => {
+    handleSubmitForm();
+
     if (!data) {
       await handleCreate(body);
     } else {

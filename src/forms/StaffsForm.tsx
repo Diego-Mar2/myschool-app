@@ -10,6 +10,7 @@ interface StaffsFormProps {
   handleUpdateById: (id: number, body: Staff) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
+  handleSubmitForm: () => void;
 }
 
 export function StaffsForm({
@@ -18,6 +19,7 @@ export function StaffsForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
+  handleSubmitForm,
   children,
 }: PropsWithChildren<StaffsFormProps>) {
   const { register, handleSubmit } = useForm<Staff>({
@@ -25,6 +27,8 @@ export function StaffsForm({
   });
 
   const onSubmit = async (body: Staff) => {
+    handleSubmitForm();
+
     if (!data) {
       await handleCreate(body);
     } else {

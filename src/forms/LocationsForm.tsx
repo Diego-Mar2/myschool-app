@@ -10,6 +10,7 @@ interface LocationsFormProps {
   handleUpdateById: (id: number, body: Location) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
+  handleSubmitForm: () => void;
 }
 
 export function LocationsForm({
@@ -18,6 +19,7 @@ export function LocationsForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
+  handleSubmitForm,
   children,
 }: PropsWithChildren<LocationsFormProps>) {
   const { register, handleSubmit } = useForm<Location>({
@@ -25,6 +27,8 @@ export function LocationsForm({
   });
 
   const onSubmit = async (body: Location) => {
+    handleSubmitForm();
+
     if (!data) {
       await handleCreate(body);
     } else {

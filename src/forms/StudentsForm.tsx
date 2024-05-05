@@ -13,6 +13,7 @@ interface StudentsFormProps {
   handleUpdateById: (id: number, body: Student) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
+  handleSubmitForm: () => void;
 }
 
 export function StudentsForm({
@@ -21,6 +22,7 @@ export function StudentsForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
+  handleSubmitForm,
   children,
 }: PropsWithChildren<StudentsFormProps>) {
   const { listData } = useSectionCRUD<Course>("/courses");
@@ -29,6 +31,8 @@ export function StudentsForm({
   });
 
   const onSubmit = async (body: Student) => {
+    handleSubmitForm();
+
     if (!data) {
       await handleCreate(body);
     } else {

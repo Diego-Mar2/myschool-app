@@ -75,7 +75,8 @@ export function SlideOver({
             colorScheme="yellow"
             variant="outline"
             isDisabled={loadingAdditionalInfo || !slideOverInfos}
-            _disabled={{ cursor: "wait" }}
+            isLoading={loadingAdditionalInfo || !slideOverInfos}
+            loadingText="Editar"
           >
             Editar
           </Button>
@@ -85,7 +86,8 @@ export function SlideOver({
             color="red"
             variant="outline"
             isDisabled={loadingAdditionalInfo || !slideOverInfos}
-            _disabled={{ cursor: "wait" }}
+            isLoading={loadingAdditionalInfo || !slideOverInfos}
+            loadingText="Deletar"
           >
             Deletar
           </Button>

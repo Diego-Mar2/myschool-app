@@ -16,6 +16,7 @@ interface ClassesFormProps {
   handleUpdateById: (id: number, body: Class) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
+  handleSubmitForm: () => void;
 }
 
 export function ClassesForm({
@@ -24,6 +25,7 @@ export function ClassesForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
+  handleSubmitForm,
   children,
 }: PropsWithChildren<ClassesFormProps>) {
   const { listData: listDataLocations } =
@@ -34,6 +36,8 @@ export function ClassesForm({
   });
 
   const onSubmit = async (body: Class) => {
+    handleSubmitForm();
+
     const [day, month, year] = body.date.split("/");
     const formattedDate = `${year}-${month}-${day}`;
 

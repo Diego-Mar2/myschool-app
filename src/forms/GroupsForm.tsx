@@ -33,6 +33,7 @@ interface GroupsFormProps {
   handleUpdateById: (id: number, body: Group) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
+  handleSubmitForm: () => void;
 }
 
 export function GroupsForm({
@@ -41,6 +42,7 @@ export function GroupsForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
+  handleSubmitForm,
   children,
 }: PropsWithChildren<GroupsFormProps>) {
   const initialGroupStudents =
@@ -59,6 +61,8 @@ export function GroupsForm({
   });
 
   const onSubmit = async (body: Group) => {
+    handleSubmitForm();
+
     if (!data) {
       await handleCreate(body);
     } else {
