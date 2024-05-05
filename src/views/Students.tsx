@@ -17,7 +17,7 @@ export interface Student {
   email: string;
   registration: string;
   document: string;
-  semester: string;
+  semester: number;
   course_id: number;
   course_name: string;
   auth_user_id: string;

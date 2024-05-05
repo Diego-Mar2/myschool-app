@@ -46,7 +46,7 @@ export function CourseForm({
   children,
 }: PropsWithChildren<CourseFormProps>) {
   const initialCourseSubjects: CourseSubjects[] =
-    data?.additionalData?.courseSubjects?.map(({ subject, semester }) => ({
+    data?.additionalData?.courseSubjects.map(({ subject, semester }) => ({
       subject_id: subject.id,
       name: subject.name,
       semester,

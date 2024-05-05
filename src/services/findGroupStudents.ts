@@ -2,10 +2,10 @@ import { fetchData } from "./";
 
 export interface GroupStudents {
   id: number;
-  student: Student;
+  student: GroupStudent;
 }
 
-interface Student {
+export interface GroupStudent {
   course: string;
   id: number;
   name: string;

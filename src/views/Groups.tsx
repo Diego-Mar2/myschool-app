@@ -33,7 +33,7 @@ export interface Group {
 
 type Semester = "1" | "2" | "1-2";
 
-type AdditionalData = {
+export type AdditionalData = {
   groupStudents: GroupStudents[];
   groupNotifications: GroupNotifications[];
 };

@@ -41,7 +41,13 @@ export function ModalForm<T, A = any>({
   handleCloseDrawer,
 }: ModalProps<T, A>) {
   return (
-    <Modal isOpen={isOpen} onClose={handleCloseFormModal}>
+    <Modal
+      isOpen={isOpen}
+      onClose={handleCloseFormModal}
+      blockScrollOnMount
+      scrollBehavior="inside"
+      closeOnEsc
+    >
       <ModalOverlay />
 
       <ModalContent p={4}>
