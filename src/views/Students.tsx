@@ -35,7 +35,7 @@ function extractData(item?: Student): TableRow {
     item.registration,
     item.document,
     item.course_name,
-    item.semester,
+    `${item.semester}º`,
   ];
 }
 

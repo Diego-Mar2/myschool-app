@@ -20,7 +20,9 @@ export interface Class {
   date: string;
   start_time: string;
   end_time: string;
+  subject_name: string;
   group_id: number;
+  group_name: string;
   location_id: number;
   location: Omit<Location, "id">;
 }
@@ -40,7 +42,8 @@ function extractData(item: Class): TableRow {
     `${item.location.building}, ${
       item.location.floor > 0 ? `${item.location.floor} º andar` : "Térreo"
     }, ${item.location.classroom}`,
-    item.group_id,
+    item.subject_name,
+    item.group_name,
     formatDate(item.date),
     item.start_time.substring(0, 5),
     item.end_time.substring(0, 5),
@@ -73,6 +76,7 @@ export function Classes({ Form }: ClassesProps) {
     "Aula",
     "Descrição",
     "Local",
+    "Matéria",
     "Turma",
     "Data",
     "Início",

@@ -45,7 +45,7 @@ export const Sections = {
     component: Students,
     form: StudentsForm,
   },
-  Professores: {
+  Funcionários: {
     component: Staffs,
     form: StaffsForm,
   },
