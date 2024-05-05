@@ -66,7 +66,7 @@ export function SlideOver({
             onClick={handleOpenFormModal}
             colorScheme="yellow"
             variant="outline"
-            isDisabled={loadingAdditionalInfo ?? !slideOverInfos}
+            isDisabled={loadingAdditionalInfo || !slideOverInfos}
             _disabled={{ cursor: "wait" }}
           >
             Editar
@@ -76,7 +76,7 @@ export function SlideOver({
             onClick={handleDelete}
             color="red"
             variant="outline"
-            isDisabled={loadingAdditionalInfo ?? !slideOverInfos}
+            isDisabled={loadingAdditionalInfo || !slideOverInfos}
             _disabled={{ cursor: "wait" }}
           >
             Deletar

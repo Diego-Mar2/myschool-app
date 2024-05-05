@@ -18,7 +18,7 @@ export interface Student {
   registration: string;
   document: string;
   semester: string;
-  course_id: string;
+  course_id: number;
   course_name: string;
   auth_user_id: string;
 }
@@ -58,7 +58,7 @@ export function Students({ Form }: StudentsProps) {
   } = useDrawer(data, setData, handleFindById, handleDeleteById);
 
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal(handleCloseDrawer);
+    useFormModal();
 
   const titles = [
     "ID",
@@ -99,6 +99,7 @@ export function Students({ Form }: StudentsProps) {
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
         handleCloseFormModal={handleCloseFormModal}
+        handleCloseDrawer={handleCloseDrawer}
       />
     </div>
   );

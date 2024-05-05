@@ -35,8 +35,8 @@ export function TableSection({
               onClick={() => handleOpenDrawer(row[0])}
               cursor="pointer"
             >
-              {row.map((column) => (
-                <Td key={column}>{column}</Td>
+              {row.map((column, index) => (
+                <Td key={index}>{column}</Td>
               ))}
             </Tr>
           );

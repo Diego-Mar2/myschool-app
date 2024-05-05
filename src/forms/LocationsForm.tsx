@@ -1,20 +1,25 @@
-import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { Location } from "../views/Locations";
+
+import type { PropsWithChildren } from "react";
+import type { Location } from "../views/Locations";
 
 interface LocationsFormProps {
-  handleCreate: (body: object) => Promise<void>;
-  handleUpdateById: (id: number, body: object) => Promise<void>;
-  handleClose: () => void;
-  data: any;
+  data?: Location;
+  handleCreate: (body: Location) => Promise<void>;
+  handleUpdateById: (id: number, body: Location) => Promise<void>;
+  handleCloseFormModal: () => void;
+  handleCloseDrawer: () => void;
 }
 
 export function LocationsForm({
+  data,
   handleCreate,
   handleUpdateById,
-  handleClose,
-  data,
-}: LocationsFormProps) {
+  handleCloseFormModal,
+  handleCloseDrawer,
+  children,
+}: PropsWithChildren<LocationsFormProps>) {
   const { register, handleSubmit } = useForm<Location>({
     defaultValues: data,
   });
@@ -24,18 +29,24 @@ export function LocationsForm({
       await handleCreate(body);
     } else {
       await handleUpdateById(data.id, body);
+
+      handleCloseDrawer();
     }
-    handleClose();
+
+    handleCloseFormModal();
   };
 
   return (
-    <>
-      <FormControl onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{ display: "grid", gap: "16px" }}
+    >
+      <FormControl isRequired>
         <FormLabel>Bloco</FormLabel>
         <Input {...register("building")} placeholder="Nome do bloco" />
       </FormControl>
 
-      <FormControl mt={4}>
+      <FormControl isRequired>
         <FormLabel>Andar</FormLabel>
         <Input
           {...register("floor", {
@@ -45,15 +56,12 @@ export function LocationsForm({
         />
       </FormControl>
 
-      <FormControl mt={4} mb={8}>
+      <FormControl isRequired>
         <FormLabel>Sala</FormLabel>
         <Input {...register("classroom")} placeholder="Número da sala" />
       </FormControl>
 
-      <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        Adicionar local de aula
-      </Button>
-      <Button onClick={handleClose}>Cancelar</Button>
-    </>
+      {children}
+    </form>
   );
 }

@@ -18,6 +18,7 @@ interface ModalProps<T, A> {
   handleCreate: (body: T) => Promise<void>;
   handleUpdateById: (id: number, body: T) => Promise<void>;
   handleCloseFormModal: () => void;
+  handleCloseDrawer: () => void;
 }
 
 type Data<T, A> = T & { additionalData?: A };
@@ -27,6 +28,7 @@ type FormProps<T, A> = PropsWithChildren<{
   handleCreate: (body: T) => Promise<void>;
   handleUpdateById: (id: number, body: T) => Promise<void>;
   handleCloseFormModal: () => void;
+  handleCloseDrawer: () => void;
 }>;
 
 export function ModalForm<T, A = any>({
@@ -34,8 +36,9 @@ export function ModalForm<T, A = any>({
   data,
   Form,
   handleCreate,
-  handleCloseFormModal,
   handleUpdateById,
+  handleCloseFormModal,
+  handleCloseDrawer,
 }: ModalProps<T, A>) {
   return (
     <Modal isOpen={isOpen} onClose={handleCloseFormModal}>
@@ -51,6 +54,7 @@ export function ModalForm<T, A = any>({
             handleCreate={handleCreate}
             handleUpdateById={handleUpdateById}
             handleCloseFormModal={handleCloseFormModal}
+            handleCloseDrawer={handleCloseDrawer}
           >
             <Flex gap={5}>
               <Button onClick={handleCloseFormModal} flex={1}>

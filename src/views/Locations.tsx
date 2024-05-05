@@ -50,7 +50,7 @@ export function Locations({ Form }: LocationsProps) {
   } = useDrawer(data, setData, handleFindById, handleDeleteById);
 
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal(handleCloseDrawer);
+    useFormModal();
 
   const titles = ["ID", "Prédio", "Andar", "Sala"];
   const tableRows: TableRow[] = listData.map(extractData);
@@ -83,6 +83,7 @@ export function Locations({ Form }: LocationsProps) {
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
         handleCloseFormModal={handleCloseFormModal}
+        handleCloseDrawer={handleCloseDrawer}
       />
     </div>
   );

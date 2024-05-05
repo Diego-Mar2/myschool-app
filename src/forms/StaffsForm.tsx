@@ -1,74 +1,74 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Switch,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Switch } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
+import type { PropsWithChildren } from "react";
 import type { Staff } from "../views/Staffs";
 
 interface StaffsFormProps {
-  handleCreate: (body: object) => Promise<void>;
-  handleUpdateById: (id: number, body: object) => Promise<void>;
-  handleClose: () => void;
-  data: any;
+  data?: Staff;
+  handleCreate: (body: Staff) => Promise<void>;
+  handleUpdateById: (id: number, body: Staff) => Promise<void>;
+  handleCloseFormModal: () => void;
+  handleCloseDrawer: () => void;
 }
 
 export function StaffsForm({
+  data,
   handleCreate,
   handleUpdateById,
-  handleClose,
-  data,
-}: StaffsFormProps) {
+  handleCloseFormModal,
+  handleCloseDrawer,
+  children,
+}: PropsWithChildren<StaffsFormProps>) {
   const { register, handleSubmit } = useForm<Staff>({
     defaultValues: data,
   });
 
   const onSubmit = async (body: Staff) => {
     if (!data) {
-      await handleCreate({ ...body, course_id: Number(body.id) });
+      await handleCreate(body);
     } else {
-      await handleUpdateById(data.id, { ...body, course_id: Number(body.id) });
+      await handleUpdateById(data.id, body);
+
+      handleCloseDrawer();
     }
 
-    handleClose();
+    handleCloseFormModal();
   };
 
   return (
-    <>
-      <FormControl onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{ display: "grid", gap: "16px" }}
+    >
+      <FormControl isRequired>
         <FormLabel>Nome</FormLabel>
         <Input {...register("name")} />
       </FormControl>
 
-      <FormControl mt={4}>
-        <FormLabel>Email</FormLabel>
+      <FormControl isRequired>
+        <FormLabel>E-mail</FormLabel>
         <Input {...register("email")} />
       </FormControl>
 
       {data?.id && (
-        <FormControl mt={4}>
+        <FormControl isRequired isDisabled>
           <FormLabel>Matrícula</FormLabel>
-          <Input {...register("registration")} minLength={13} maxLength={13} />
+          <Input {...register("registration")} />
         </FormControl>
       )}
 
-      <FormControl mt={4}>
+      <FormControl isRequired>
         <FormLabel>CPF</FormLabel>
         <Input {...register("document")} />
       </FormControl>
 
-      <FormControl mt={4} mb={8}>
+      <FormControl isRequired>
         <FormLabel>Permissão pra administração?</FormLabel>
         <Switch id="isAdmin" {...register("is_admin")} />
       </FormControl>
 
-      <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        Adicionar colaborador
-      </Button>
-      <Button onClick={handleClose}>Cancelar</Button>
-    </>
+      {children}
+    </form>
   );
 }

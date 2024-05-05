@@ -55,7 +55,7 @@ export function Staffs({ Form }: StaffsProps) {
   } = useDrawer(data, setData, handleFindById, handleDeleteById);
 
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal(handleCloseDrawer);
+    useFormModal();
 
   const titles = [
     "ID",
@@ -95,6 +95,7 @@ export function Staffs({ Form }: StaffsProps) {
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
         handleCloseFormModal={handleCloseFormModal}
+        handleCloseDrawer={handleCloseDrawer}
       />
     </div>
   );

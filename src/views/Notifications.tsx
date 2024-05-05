@@ -62,7 +62,7 @@ export function Notifications({ Form }: NotificationsProps) {
   } = useDrawer(data, setData, handleFindById, handleDeleteById);
 
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal(handleCloseDrawer);
+    useFormModal();
 
   const titles = ["ID", "Professor", "Criado em", "Título", "Descrição"];
   const tableRows: TableRow[] = listData.map(extractData);
@@ -95,6 +95,7 @@ export function Notifications({ Form }: NotificationsProps) {
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
         handleCloseFormModal={handleCloseFormModal}
+        handleCloseDrawer={handleCloseDrawer}
       />
     </div>
   );

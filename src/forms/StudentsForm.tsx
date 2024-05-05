@@ -1,30 +1,28 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Select } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 
+import type { PropsWithChildren } from "react";
 import type { Student } from "../views/Students";
 import type { Course } from "../views/Courses";
 
 interface StudentsFormProps {
-  handleCreate: (body: object) => Promise<void>;
-  handleUpdateById: (id: number, body: object) => Promise<void>;
-  handleClose: () => void;
-  data: any;
+  data?: Student;
+  handleCreate: (body: Student) => Promise<void>;
+  handleUpdateById: (id: number, body: Student) => Promise<void>;
+  handleCloseFormModal: () => void;
+  handleCloseDrawer: () => void;
 }
 
 export function StudentsForm({
+  data,
   handleCreate,
   handleUpdateById,
-  handleClose,
-  data,
-}: StudentsFormProps) {
+  handleCloseFormModal,
+  handleCloseDrawer,
+  children,
+}: PropsWithChildren<StudentsFormProps>) {
   const { listData } = useSectionCRUD<Course>("/courses");
   const { register, handleSubmit } = useForm<Student>({
     defaultValues: data,
@@ -32,41 +30,44 @@ export function StudentsForm({
 
   const onSubmit = async (body: Student) => {
     if (!data) {
-      await handleCreate({ ...body, course_id: Number(body.course_id) });
+      await handleCreate(body);
     } else {
-      await handleUpdateById(data.id, {
-        ...body,
-        course_id: Number(body.course_id),
-      });
+      await handleUpdateById(data.id, body);
+
+      handleCloseDrawer();
     }
-    handleClose();
+
+    handleCloseFormModal();
   };
 
   return (
-    <>
-      <FormControl onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{ display: "grid", gap: "16px" }}
+    >
+      <FormControl isRequired>
         <FormLabel>Nome</FormLabel>
         <Input {...register("name")} />
       </FormControl>
 
-      <FormControl mt={4}>
-        <FormLabel>Email</FormLabel>
+      <FormControl isRequired>
+        <FormLabel>E-mail</FormLabel>
         <Input {...register("email")} />
       </FormControl>
 
       {data?.id && (
-        <FormControl mt={4}>
+        <FormControl isRequired isDisabled>
           <FormLabel>Matrícula</FormLabel>
-          <Input {...register("registration")} minLength={13} maxLength={13} />
+          <Input {...register("registration")} />
         </FormControl>
       )}
 
-      <FormControl mt={4}>
+      <FormControl isRequired>
         <FormLabel>CPF</FormLabel>
         <Input {...register("document")} />
       </FormControl>
 
-      <FormControl mt={4}>
+      <FormControl isRequired>
         <FormLabel>Curso</FormLabel>
         <Select
           {...register("course_id", {
@@ -82,7 +83,7 @@ export function StudentsForm({
         </Select>
       </FormControl>
 
-      <FormControl mt={4} mb={8}>
+      <FormControl isRequired>
         <FormLabel>Semestre</FormLabel>
         <Input
           {...register("semester", {
@@ -91,10 +92,7 @@ export function StudentsForm({
         />
       </FormControl>
 
-      <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        Adicionar aluno
-      </Button>
-      <Button onClick={handleClose}>Cancelar</Button>
-    </>
+      {children}
+    </form>
   );
 }

@@ -44,7 +44,7 @@ export function Subjects({ Form }: SubjectsProps) {
   } = useDrawer(data, setData, handleFindById, handleDeleteById);
 
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal(handleCloseDrawer);
+    useFormModal();
 
   const titles = ["ID", "Nome da Matéria", "Descrição"];
   const tableRows: TableRow[] = listData.map(extractData);
@@ -77,6 +77,7 @@ export function Subjects({ Form }: SubjectsProps) {
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
         handleCloseFormModal={handleCloseFormModal}
+        handleCloseDrawer={handleCloseDrawer}
       />
     </div>
   );

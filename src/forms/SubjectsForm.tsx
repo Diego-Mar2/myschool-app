@@ -1,20 +1,25 @@
-import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { Subject } from "../views/Subjects";
+
+import type { PropsWithChildren } from "react";
+import type { Subject } from "../views/Subjects";
 
 interface SubjectFormProps {
-  handleCreate: (body: object) => Promise<void>;
-  handleUpdateById: (id: number, body: object) => Promise<void>;
-  handleClose: () => void;
-  data: any;
+  data?: Subject;
+  handleCreate: (body: Subject) => Promise<void>;
+  handleUpdateById: (id: number, body: Subject) => Promise<void>;
+  handleCloseFormModal: () => void;
+  handleCloseDrawer: () => void;
 }
 
 export function SubjectForm({
+  data,
   handleCreate,
   handleUpdateById,
-  handleClose,
-  data,
-}: SubjectFormProps) {
+  handleCloseFormModal,
+  handleCloseDrawer,
+  children,
+}: PropsWithChildren<SubjectFormProps>) {
   const { register, handleSubmit } = useForm<Subject>({
     defaultValues: data,
   });
@@ -24,18 +29,24 @@ export function SubjectForm({
       await handleCreate(body);
     } else {
       await handleUpdateById(data.id, body);
+
+      handleCloseDrawer();
     }
-    handleClose();
+
+    handleCloseFormModal();
   };
 
   return (
-    <>
-      <FormControl onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{ display: "grid", gap: "16px" }}
+    >
+      <FormControl isRequired>
         <FormLabel>Nome</FormLabel>
         <Input {...register("name")} placeholder="Nome da matéria" />
       </FormControl>
 
-      <FormControl mt={4} mb={8}>
+      <FormControl isRequired>
         <FormLabel>Descrição</FormLabel>
         <Input
           {...register("description")}
@@ -43,10 +54,7 @@ export function SubjectForm({
         />
       </FormControl>
 
-      <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        Criar matéria
-      </Button>
-      <Button onClick={handleClose}>Cancelar</Button>
-    </>
+      {children}
+    </form>
   );
 }

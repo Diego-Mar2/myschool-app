@@ -1,30 +1,31 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-} from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import { Class } from "../views/Classes";
-import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import { Location } from "../views/Locations";
-import { Group } from "../views/Groups";
+import { FormControl, FormLabel, Input, Select } from "@chakra-ui/react";
 import InputMask from "react-input-mask";
+import { useForm } from "react-hook-form";
+
+import { useSectionCRUD } from "../hooks/useSectionCRUD";
+
+import type { Location } from "../views/Locations";
+import type { Group } from "../views/Groups";
+import type { Class } from "../views/Classes";
+
+import type { PropsWithChildren } from "react";
 
 interface ClassesFormProps {
-  handleCreate: (body: object) => Promise<void>;
-  handleUpdateById: (id: number, body: object) => Promise<void>;
-  handleClose: () => void;
-  data: any;
+  data?: Class;
+  handleCreate: (body: Class) => Promise<void>;
+  handleUpdateById: (id: number, body: Class) => Promise<void>;
+  handleCloseFormModal: () => void;
+  handleCloseDrawer: () => void;
 }
 
 export function ClassesForm({
+  data,
   handleCreate,
   handleUpdateById,
-  handleClose,
-  data,
-}: ClassesFormProps) {
+  handleCloseFormModal,
+  handleCloseDrawer,
+  children,
+}: PropsWithChildren<ClassesFormProps>) {
   const { listData: listDataLocations } =
     useSectionCRUD<Location>("/locations");
   const { listData: listDataGroups } = useSectionCRUD<Group>("/groups");
@@ -39,36 +40,42 @@ export function ClassesForm({
     if (!data) {
       await handleCreate({
         ...body,
-        course_id: Number(body.id),
         date: formattedDate,
       });
     } else {
       await handleUpdateById(data.id, {
         ...body,
-        course_id: Number(body.id),
         date: formattedDate,
       });
+
+      handleCloseDrawer();
     }
-    handleClose();
+
+    handleCloseFormModal();
   };
 
   return (
-    <>
-      <FormControl onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{ display: "grid", gap: "16px" }}
+    >
+      <FormControl>
         <FormLabel>Nome</FormLabel>
         <Input {...register("name")} />
       </FormControl>
 
-      <FormControl mt={4}>
+      <FormControl>
         <FormLabel>Descrição</FormLabel>
         <Input {...register("description")} />
       </FormControl>
-      <FormControl mt={4}>
+
+      <FormControl isRequired>
         <FormLabel>Local</FormLabel>
         <Select
           {...register("location_id", {
             valueAsNumber: true,
           })}
+          defaultValue={data?.location_id}
           placeholder="Selecione o local da aula"
         >
           {listDataLocations.map(({ id, building, classroom, floor }) => (
@@ -77,42 +84,47 @@ export function ClassesForm({
             </option>
           ))}
         </Select>
+      </FormControl>
+
+      <FormControl isRequired>
         <FormLabel>Turma</FormLabel>
         <Select
           {...register("group_id", {
             valueAsNumber: true,
           })}
           placeholder="Selecione a turma"
+          defaultValue={data?.group_id}
         >
-          {listDataGroups.map(({ id, subject_name, name }) =>
-            id !== 3 ? (
+          {listDataGroups.map(({ id, subject_name, name }) => {
+            if (id === 3) {
+              return null;
+            }
+
+            return (
               <option value={id}>
                 {subject_name}, {name}
               </option>
-            ) : null,
-          )}
+            );
+          })}
         </Select>
-        <FormLabel>Data</FormLabel>
-        <Input
-          as={InputMask}
-          mask="99/99/9999" //verificar ainda esse detalhe de data
-          {...register("date")}
-        />
-      </FormControl>
-      <FormControl mt={4}>
-        <FormLabel>Horário de início</FormLabel>
-        <Input as={InputMask} mask="99:99" {...register("start_time")} />
-      </FormControl>
-      <FormControl mt={4}></FormControl>
-      <FormControl mt={4} mb={8}>
-        <FormLabel>Horário de término</FormLabel>
-        <Input as={InputMask} mask="99:99" {...register("end_time")} />
       </FormControl>
 
-      <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        Adicionar aluno
-      </Button>
-      <Button onClick={handleClose}>Cancelar</Button>
-    </>
+      <FormControl isRequired>
+        <FormLabel>Data</FormLabel>
+        <Input as={InputMask} mask="DD/MM/AAAA" {...register("date")} />
+      </FormControl>
+
+      <FormControl isRequired>
+        <FormLabel>Horário de início</FormLabel>
+        <Input as={InputMask} mask="HH:MM" {...register("start_time")} />
+      </FormControl>
+
+      <FormControl isRequired>
+        <FormLabel>Horário de término</FormLabel>
+        <Input as={InputMask} mask="HH:MM" {...register("end_time")} />
+      </FormControl>
+
+      {children}
+    </form>
   );
 }

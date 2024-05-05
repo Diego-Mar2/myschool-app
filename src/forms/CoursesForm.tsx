@@ -1,12 +1,12 @@
 import { useState } from "react";
 import {
-  Button,
-  Flex,
   FormControl,
   FormLabel,
-  Grid,
   Input,
   Select,
+  Grid,
+  Flex,
+  Button,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
@@ -26,6 +26,7 @@ interface CourseFormProps {
   handleCreate: (body: Course) => Promise<void>;
   handleUpdateById: (id: number, body: Course) => Promise<void>;
   handleCloseFormModal: () => void;
+  handleCloseDrawer: () => void;
 }
 
 interface CourseSubjects {
@@ -39,6 +40,7 @@ export function CourseForm({
   handleCreate,
   handleUpdateById,
   handleCloseFormModal,
+  handleCloseDrawer,
   children,
 }: PropsWithChildren<CourseFormProps>) {
   const initialCourseSubjects: CourseSubjects[] =
@@ -67,12 +69,12 @@ export function CourseForm({
     } else {
       await Promise.all([
         handleUpdateById(data.id, body),
-        courseSubjects.length > 0
-          ? updateCourseSubjects(session?.access_token!, data.id, {
-              subjects: courseSubjects.map(({ name, ...rest }) => rest),
-            })
-          : undefined,
+        updateCourseSubjects(session?.access_token!, data.id, {
+          subjects: courseSubjects.map(({ name, ...rest }) => rest),
+        }),
       ]);
+
+      handleCloseDrawer();
     }
 
     handleCloseFormModal();

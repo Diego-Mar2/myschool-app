@@ -58,7 +58,7 @@ export function Groups({ Form }: GroupsProps) {
   } = useDrawer(data, setData, handleFindById, handleDeleteById);
 
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal(handleCloseDrawer);
+    useFormModal();
 
   const titles = ["ID", "Matéria", "Turma", "Professor", "Ano", "Semestre"];
   const tableRows: TableRow[] = listData.map(extractData);
@@ -91,6 +91,7 @@ export function Groups({ Form }: GroupsProps) {
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
         handleCloseFormModal={handleCloseFormModal}
+        handleCloseDrawer={handleCloseDrawer}
       />
     </div>
   );
