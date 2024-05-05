@@ -19,7 +19,9 @@ import type { CourseSubjects as CourseSubjectsResponse } from "../services/findC
 import type { Course } from "../views/Courses";
 import type { Subject } from "../views/Subjects";
 
-type Data = Course & { additionalData?: CourseSubjectsResponse[] };
+type Data = Course & {
+  additionalData?: { courseSubjects: CourseSubjectsResponse[] };
+};
 
 interface CourseFormProps {
   data?: Data;
@@ -44,13 +46,11 @@ export function CourseForm({
   children,
 }: PropsWithChildren<CourseFormProps>) {
   const initialCourseSubjects: CourseSubjects[] =
-    (data?.additionalData as CourseSubjectsResponse[] | undefined)?.map(
-      ({ subject, semester }) => ({
-        subject_id: subject.id,
-        name: subject.name,
-        semester,
-      }),
-    ) || [];
+    data?.additionalData?.courseSubjects?.map(({ subject, semester }) => ({
+      subject_id: subject.id,
+      name: subject.name,
+      semester,
+    })) || [];
 
   const [courseSubjects, setCourseSubjects] = useState<CourseSubjects[]>(
     initialCourseSubjects,

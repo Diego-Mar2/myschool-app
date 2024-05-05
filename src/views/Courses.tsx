@@ -48,7 +48,7 @@ export function Courses({ Form }: CoursesProps) {
     handleDeleteById,
     handleCreate,
     handleUpdateById,
-  } = useSectionCRUD<Course, CourseSubjects[]>("/courses");
+  } = useSectionCRUD<Course, { courseSubjects: CourseSubjects[] }>("/courses");
 
   const {
     isDrawerOpen,
@@ -73,14 +73,14 @@ export function Courses({ Form }: CoursesProps) {
       try {
         setLoadingAdditionalInfo(true);
 
-        const additionalData = await findCourseSubjects(
+        const courseSubjects = await findCourseSubjects(
           session.access_token,
           data.id,
         );
 
         setData({
           ...data,
-          additionalData,
+          additionalData: { courseSubjects },
         });
       } catch {
         setData(data);
@@ -120,11 +120,13 @@ export function Courses({ Form }: CoursesProps) {
               {loadingAdditionalInfo && <p>Carregando matérias...</p>}
 
               <List>
-                {data?.additionalData?.map(({ id, subject, semester }) => (
-                  <ListItem key={id}>
-                    {subject.name} - {semester}º Semestre
-                  </ListItem>
-                ))}
+                {data?.additionalData?.courseSubjects.map(
+                  ({ id, subject, semester }) => (
+                    <ListItem key={id}>
+                      {subject.name} - {semester}º Semestre
+                    </ListItem>
+                  ),
+                )}
               </List>
             </div>
           )}
