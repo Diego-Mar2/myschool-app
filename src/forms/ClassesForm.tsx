@@ -111,17 +111,17 @@ export function ClassesForm({
 
       <FormControl isRequired>
         <FormLabel>Data</FormLabel>
-        <Input as={InputMask} mask="DD/MM/AAAA" {...register("date")} />
+        <Input as={InputMask} mask="99/99/9999" {...register("date")} />
       </FormControl>
 
       <FormControl isRequired>
         <FormLabel>Horário de início</FormLabel>
-        <Input as={InputMask} mask="HH:MM" {...register("start_time")} />
+        <Input as={InputMask} mask="99:99" {...register("start_time")} />
       </FormControl>
 
       <FormControl isRequired>
         <FormLabel>Horário de término</FormLabel>
-        <Input as={InputMask} mask="HH:MM" {...register("end_time")} />
+        <Input as={InputMask} mask="99:99" {...register("end_time")} />
       </FormControl>
 
       {children}

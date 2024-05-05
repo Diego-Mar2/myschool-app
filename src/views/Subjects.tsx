@@ -18,7 +18,7 @@ export interface Subject {
 }
 
 function extractData(item?: Subject): TableRow {
-  if (!item) {
+  if (!item || item.id === 3) {
     return null;
   }
 

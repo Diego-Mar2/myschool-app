@@ -8,6 +8,7 @@ import { Classes } from "./Classes";
 import { ClassesForm } from "../forms/ClassesForm";
 
 import { Groups } from "./Groups";
+import { GroupsForm } from "../forms/GroupsForm";
 
 import { Students } from "./Students";
 import { StudentsForm } from "../forms/StudentsForm";
@@ -19,6 +20,7 @@ import { Locations } from "./Locations";
 import { LocationsForm } from "../forms/LocationsForm";
 
 import { Notifications } from "./Notifications";
+import { NotificationsForm } from "../forms/NotificationsForm";
 
 export type SectionName = keyof typeof Sections;
 
@@ -37,7 +39,7 @@ export const Sections = {
   },
   Turmas: {
     component: Groups,
-    form: CourseForm,
+    form: GroupsForm,
   },
   Alunos: {
     component: Students,
@@ -53,7 +55,7 @@ export const Sections = {
   },
   Notificações: {
     component: Notifications,
-    form: CourseForm,
+    form: NotificationsForm,
   },
 };
 
