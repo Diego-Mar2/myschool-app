@@ -10,7 +10,7 @@ interface StaffsFormProps {
   handleUpdateById: (id: number, body: Staff) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
-  handleSubmitForm: () => void;
+  setIsSubmitting: (isSubmitting: boolean) => void;
 }
 
 export function StaffsForm({
@@ -19,7 +19,7 @@ export function StaffsForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
-  handleSubmitForm,
+  setIsSubmitting,
   children,
 }: PropsWithChildren<StaffsFormProps>) {
   const { register, handleSubmit } = useForm<Staff>({
@@ -27,17 +27,20 @@ export function StaffsForm({
   });
 
   const onSubmit = async (body: Staff) => {
-    handleSubmitForm();
+    setIsSubmitting(true);
 
     if (!data) {
       await handleCreate(body);
+
+      handleCloseFormModal();
     } else {
       await handleUpdateById(data.id, body);
 
+      handleCloseFormModal();
       handleCloseDrawer();
     }
 
-    handleCloseFormModal();
+    setIsSubmitting(false);
   };
 
   return (

@@ -10,7 +10,7 @@ interface SubjectFormProps {
   handleUpdateById: (id: number, body: Subject) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
-  handleSubmitForm: () => void;
+  setIsSubmitting: (isSubmitting: boolean) => void;
 }
 
 export function SubjectForm({
@@ -19,7 +19,7 @@ export function SubjectForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
-  handleSubmitForm,
+  setIsSubmitting,
   children,
 }: PropsWithChildren<SubjectFormProps>) {
   const { register, handleSubmit } = useForm<Subject>({
@@ -27,17 +27,20 @@ export function SubjectForm({
   });
 
   const onSubmit = async (body: Subject) => {
-    handleSubmitForm();
+    setIsSubmitting(true);
 
     if (!data) {
       await handleCreate(body);
+
+      handleCloseFormModal();
     } else {
       await handleUpdateById(data.id, body);
 
+      handleCloseFormModal();
       handleCloseDrawer();
     }
 
-    handleCloseFormModal();
+    setIsSubmitting(false);
   };
 
   return (

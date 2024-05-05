@@ -33,7 +33,7 @@ interface GroupsFormProps {
   handleUpdateById: (id: number, body: Group) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
-  handleSubmitForm: () => void;
+  setIsSubmitting: (isSubmitting: boolean) => void;
 }
 
 export function GroupsForm({
@@ -42,7 +42,7 @@ export function GroupsForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
-  handleSubmitForm,
+  setIsSubmitting,
   children,
 }: PropsWithChildren<GroupsFormProps>) {
   const initialGroupStudents =
@@ -61,10 +61,12 @@ export function GroupsForm({
   });
 
   const onSubmit = async (body: Group) => {
-    handleSubmitForm();
+    setIsSubmitting(true);
 
     if (!data) {
       await handleCreate(body);
+
+      handleCloseFormModal();
     } else {
       await Promise.all([
         handleUpdateById(data.id, body),
@@ -73,10 +75,11 @@ export function GroupsForm({
         }),
       ]);
 
+      handleCloseFormModal();
       handleCloseDrawer();
     }
 
-    handleCloseFormModal();
+    setIsSubmitting(false);
   };
 
   function handleAddStudent(event: React.ChangeEvent<HTMLSelectElement>) {

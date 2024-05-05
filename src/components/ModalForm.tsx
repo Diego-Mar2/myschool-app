@@ -30,7 +30,7 @@ type FormProps<T, A> = PropsWithChildren<{
   handleUpdateById: (id: number, body: T) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
-  handleSubmitForm: () => void;
+  setIsSubmitting: (isSubmitting: boolean) => void;
 }>;
 
 export function ModalForm<T, A = any>({
@@ -43,10 +43,6 @@ export function ModalForm<T, A = any>({
   handleCloseDrawer,
 }: ModalProps<T, A>) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  function handleSubmitForm() {
-    setIsSubmitting(true);
-  }
 
   return (
     <Modal
@@ -69,7 +65,7 @@ export function ModalForm<T, A = any>({
             handleUpdateById={handleUpdateById}
             handleCloseFormModal={handleCloseFormModal}
             handleCloseDrawer={handleCloseDrawer}
-            handleSubmitForm={handleSubmitForm}
+            setIsSubmitting={setIsSubmitting}
           >
             <Flex gap={5}>
               <Button onClick={handleCloseFormModal} flex={1}>

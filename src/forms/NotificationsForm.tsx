@@ -10,7 +10,7 @@ interface NotificationsFormProps {
   handleUpdateById: (id: number, body: Notification) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
-  handleSubmitForm: () => void;
+  setIsSubmitting: (isSubmitting: boolean) => void;
 }
 
 export function NotificationsForm({
@@ -19,7 +19,7 @@ export function NotificationsForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
-  handleSubmitForm,
+  setIsSubmitting,
   children,
 }: PropsWithChildren<NotificationsFormProps>) {
   const { register, handleSubmit } = useForm<Notification>({
@@ -27,17 +27,20 @@ export function NotificationsForm({
   });
 
   const onSubmit = async (body: Notification) => {
-    handleSubmitForm();
+    setIsSubmitting(true);
 
     if (!data) {
       await handleCreate(body);
+
+      handleCloseFormModal();
     } else {
       await handleUpdateById(data.id, body);
 
+      handleCloseFormModal();
       handleCloseDrawer();
     }
 
-    handleCloseFormModal();
+    setIsSubmitting(false);
   };
 
   return (

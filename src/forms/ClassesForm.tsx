@@ -16,7 +16,7 @@ interface ClassesFormProps {
   handleUpdateById: (id: number, body: Class) => Promise<void>;
   handleCloseFormModal: () => void;
   handleCloseDrawer: () => void;
-  handleSubmitForm: () => void;
+  setIsSubmitting: (isSubmitting: boolean) => void;
 }
 
 export function ClassesForm({
@@ -25,7 +25,7 @@ export function ClassesForm({
   handleUpdateById,
   handleCloseFormModal,
   handleCloseDrawer,
-  handleSubmitForm,
+  setIsSubmitting,
   children,
 }: PropsWithChildren<ClassesFormProps>) {
   const { listData: listDataLocations } =
@@ -36,7 +36,7 @@ export function ClassesForm({
   });
 
   const onSubmit = async (body: Class) => {
-    handleSubmitForm();
+    setIsSubmitting(true);
 
     const [day, month, year] = body.date.split("/");
     const formattedDate = `${year}-${month}-${day}`;
@@ -46,16 +46,19 @@ export function ClassesForm({
         ...body,
         date: formattedDate,
       });
+
+      handleCloseFormModal();
     } else {
       await handleUpdateById(data.id, {
         ...body,
         date: formattedDate,
       });
 
+      handleCloseFormModal();
       handleCloseDrawer();
     }
 
-    handleCloseFormModal();
+    setIsSubmitting(false);
   };
 
   return (
