@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Grid, List, ListItem } from "@chakra-ui/react";
+import { Grid, Text, List, ListItem, Divider } from "@chakra-ui/react";
 
 import { Header } from "../components/Header";
 import { TableSection, type TableRow } from "../components/TableSection";
@@ -10,10 +10,9 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
 import { useDrawer } from "../hooks/useDrawer";
 import { useFormModal } from "../hooks/useFormModal";
-import {
-  findCourseSubjects,
-  type CourseSubjects,
-} from "../services/findCourseSubjects";
+import { findCourseSubjects } from "../services/findCourseSubjects";
+
+import type { CourseSubjects } from "../services/findCourseSubjects";
 
 interface CoursesProps {
   Form: (props: any) => React.ReactNode;
@@ -69,7 +68,7 @@ export function Courses({ Form }: CoursesProps) {
       return;
     }
 
-    const fetchCourseSubjects = async () => {
+    const fetchAdditionalData = async () => {
       try {
         setLoadingAdditionalInfo(true);
 
@@ -89,7 +88,7 @@ export function Courses({ Form }: CoursesProps) {
       }
     };
 
-    fetchCourseSubjects();
+    fetchAdditionalData();
   }, [data]);
 
   return (
@@ -112,23 +111,32 @@ export function Courses({ Form }: CoursesProps) {
         handleOpenFormModal={handleOpenFormModal}
         handleDelete={handleDeleteRegister}
       >
-        <Grid gap={5} mt={5}>
+        <Grid gap={5}>
           {(loadingAdditionalInfo || data?.additionalData) && (
-            <div>
-              <strong>Matérias:</strong>
+            <>
+              {loadingAdditionalInfo && (
+                <Text mt={5}>Carregando matérias...</Text>
+              )}
 
-              {loadingAdditionalInfo && <p>Carregando matérias...</p>}
+              {data?.additionalData?.courseSubjects &&
+                data.additionalData.courseSubjects.length > 0 && (
+                  <>
+                    <Text mt={5}>Matérias:</Text>
 
-              <List>
-                {data?.additionalData?.courseSubjects.map(
-                  ({ id, subject, semester }) => (
-                    <ListItem key={id}>
-                      {subject.name} - {semester}º Semestre
-                    </ListItem>
-                  ),
+                    <List>
+                      {data?.additionalData?.courseSubjects.map(
+                        ({ id, subject, semester }) => (
+                          <ListItem key={id}>
+                            &bull; {subject.name} - {semester}º Semestre
+                          </ListItem>
+                        ),
+                      )}
+                    </List>
+
+                    <Divider />
+                  </>
                 )}
-              </List>
-            </div>
+            </>
           )}
         </Grid>
       </SlideOver>

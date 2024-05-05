@@ -6,6 +6,8 @@ import {
   DrawerHeader,
   DrawerBody,
   Grid,
+  Text,
+  Divider,
   Button,
   DrawerFooter,
 } from "@chakra-ui/react";
@@ -44,15 +46,21 @@ export function SlideOver({
 
         <DrawerBody>
           {!slideOverInfos ? (
-            <p>Carregando...</p>
+            <Text>Carregando...</Text>
           ) : (
             <>
               <Grid gap={5}>
                 {slideOverTitles.map((title, index) => (
-                  <p key={index}>
-                    <strong>{title.endsWith("?") ? title : `${title}:`}</strong>{" "}
-                    {slideOverInfos[index]}
-                  </p>
+                  <>
+                    <Text key={index}>
+                      <strong>
+                        {title.endsWith("?") ? title : `${title}:`}
+                      </strong>{" "}
+                      {slideOverInfos[index]}
+                    </Text>
+
+                    <Divider />
+                  </>
                 ))}
               </Grid>
 

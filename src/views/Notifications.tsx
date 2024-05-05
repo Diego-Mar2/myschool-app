@@ -64,7 +64,7 @@ export function Notifications({ Form }: NotificationsProps) {
   const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
     useFormModal();
 
-  const titles = ["ID", "Professor", "Criado em", "Título", "Descrição"];
+  const titles = ["ID", "Enviado por", "Criado em", "Título", "Descrição"];
   const tableRows: TableRow[] = listData.map(extractData);
   const slideOverInfos: TableRow | undefined = extractData(data);
 
