@@ -12,9 +12,9 @@ export const Login = () => {
   const { register, handleSubmit } = useForm<AuthForm>();
 
   const onSubmit = async (body: AuthForm) => {
-    const { error } = await supabase.auth.signInWithPassword(body);
+    const { data, error } = await supabase.auth.signInWithPassword(body);
 
-    if (error) {
+    if (error || !data.user.user_metadata.is_admin) {
       return alert("Credenciais inválidas");
     }
   };

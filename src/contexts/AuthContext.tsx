@@ -22,13 +22,17 @@ export const AuthContextProvider = ({
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
+      if (data.session?.user.user_metadata.is_admin) {
+        setSession(data.session);
+      }
     });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+      if (session?.user.user_metadata.is_admin) {
+        setSession(session);
+      }
     });
 
     return () => subscription.unsubscribe();
