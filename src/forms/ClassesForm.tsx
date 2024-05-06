@@ -7,8 +7,8 @@ import { dateMask } from "../utils/dateMask";
 import { timeMask } from "../utils/timeMask";
 
 import type { PropsWithChildren } from "react";
-import type { Location } from "../views/Locations";
 import type { Group } from "../views/Groups";
+import type { Location } from "../views/Locations";
 import type { Class } from "../views/Classes";
 
 interface ClassesFormProps {
@@ -39,9 +39,9 @@ export function ClassesForm({
   setIsSubmitting,
   children,
 }: PropsWithChildren<ClassesFormProps>) {
+  const { listData: listDataGroups } = useSectionCRUD<Group>("/groups");
   const { listData: listDataLocations } =
     useSectionCRUD<Location>("/locations");
-  const { listData: listDataGroups } = useSectionCRUD<Group>("/groups");
   const { register, setValue, handleSubmit } = useForm<Class>({
     defaultValues: data
       ? {
