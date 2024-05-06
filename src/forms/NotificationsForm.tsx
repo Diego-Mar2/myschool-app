@@ -50,12 +50,20 @@ export function NotificationsForm({
     >
       <FormControl isRequired>
         <FormLabel>Título da notificação</FormLabel>
-        <Input {...register("title")} placeholder="Título da notificação" />
+        <Input
+          {...register("title")}
+          maxLength={50}
+          placeholder="Título da notificação"
+        />
       </FormControl>
 
       <FormControl isRequired>
         <FormLabel>Mensagem</FormLabel>
-        <Input {...register("message")} placeholder="Mensagem" />
+        <Input
+          {...register("message")}
+          maxLength={200}
+          placeholder="Mensagem"
+        />
       </FormControl>
 
       {children}

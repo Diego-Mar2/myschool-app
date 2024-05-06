@@ -150,7 +150,8 @@ export function ClassesForm({
         >
           {listDataLocations.map(({ id, building, classroom, floor }) => (
             <option key={id} value={id}>
-              [{building}] {floor}º Andar, sala {classroom}
+              [{building}] {floor > 0 ? `${floor}º andar` : "Térreo"},{" "}
+              {classroom}
             </option>
           ))}
         </Select>

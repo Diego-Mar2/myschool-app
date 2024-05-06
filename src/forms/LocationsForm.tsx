@@ -59,6 +59,8 @@ export function LocationsForm({
           {...register("floor", {
             valueAsNumber: true,
           })}
+          type="number"
+          min={0}
           placeholder="Número do andar"
         />
       </FormControl>
