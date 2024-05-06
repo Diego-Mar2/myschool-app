@@ -47,8 +47,8 @@ export function ClassesForm({
       ? {
           ...data,
           date: formatDate(data.date, true),
-          start_time: data.start_time.substring(0, 5),
-          end_time: data.end_time.substring(0, 5),
+          start_time: timeMask(data.start_time),
+          end_time: timeMask(data.end_time),
         }
       : undefined,
   });
@@ -107,7 +107,7 @@ export function ClassesForm({
             }
 
             return (
-              <option value={id}>
+              <option key={id} value={id}>
                 {subject_name}, {name}
               </option>
             );
@@ -127,8 +127,7 @@ export function ClassesForm({
       <FormControl isRequired>
         <FormLabel>Horário de início</FormLabel>
         <Input
-          {...(register("start_time"),
-          {
+          {...register("start_time", {
             onChange: (e) => setValue("start_time", timeMask(e.target.value)),
           })}
         />
@@ -137,8 +136,7 @@ export function ClassesForm({
       <FormControl isRequired>
         <FormLabel>Horário de término</FormLabel>
         <Input
-          {...(register("end_time"),
-          {
+          {...register("end_time", {
             onChange: (e) => setValue("end_time", timeMask(e.target.value)),
           })}
         />
@@ -151,7 +149,7 @@ export function ClassesForm({
           placeholder="Selecione o local da aula"
         >
           {listDataLocations.map(({ id, building, classroom, floor }) => (
-            <option value={id}>
+            <option key={id} value={id}>
               [{building}] {floor}º Andar, sala {classroom}
             </option>
           ))}

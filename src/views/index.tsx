@@ -25,6 +25,14 @@ import { NotificationsForm } from "../forms/NotificationsForm";
 export type SectionName = keyof typeof Sections;
 
 export const Sections = {
+  Funcionários: {
+    component: Staffs,
+    form: StaffsForm,
+  },
+  Alunos: {
+    component: Students,
+    form: StudentsForm,
+  },
   Cursos: {
     component: Courses,
     form: CourseForm,
@@ -33,21 +41,13 @@ export const Sections = {
     component: Subjects,
     form: SubjectForm,
   },
-  Aulas: {
-    component: Classes,
-    form: ClassesForm,
-  },
   Turmas: {
     component: Groups,
     form: GroupsForm,
   },
-  Alunos: {
-    component: Students,
-    form: StudentsForm,
-  },
-  Funcionários: {
-    component: Staffs,
-    form: StaffsForm,
+  Aulas: {
+    component: Classes,
+    form: ClassesForm,
   },
   "Salas de aula": {
     component: Locations,

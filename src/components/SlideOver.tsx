@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import {
   Drawer,
   DrawerOverlay,
@@ -51,8 +52,8 @@ export function SlideOver({
             <>
               <Grid gap={5}>
                 {slideOverTitles.map((title, index) => (
-                  <>
-                    <Text key={index}>
+                  <Fragment key={title}>
+                    <Text>
                       <strong>
                         {title.endsWith("?") ? title : `${title}:`}
                       </strong>{" "}
@@ -60,7 +61,7 @@ export function SlideOver({
                     </Text>
 
                     <Divider />
-                  </>
+                  </Fragment>
                 ))}
               </Grid>
 
