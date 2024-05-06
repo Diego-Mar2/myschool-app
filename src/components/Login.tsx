@@ -1,4 +1,11 @@
-import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  HStack,
+  Input,
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 import { supabase } from "../config/supabase";
@@ -15,25 +22,55 @@ export const Login = () => {
     const { error } = await supabase.auth.signInWithPassword(body);
 
     if (error) {
-        return alert('Credenciais inválidas')
+      return alert("Credenciais inválidas");
     }
   };
 
   return (
-    <>
-      <FormControl onSubmit={handleSubmit(onSubmit)}>
-        <FormLabel>E-mail</FormLabel>
-        <Input {...register("email")} placeholder="E-mail" />
-      </FormControl>
+    <HStack w="full" h="100vh" bg="#152259" padding={100} justifyContent="end">
+      <Flex>
 
-      <FormControl mt={4} mb={8}>
-        <FormLabel>Senha</FormLabel>
-        <Input {...register("password")} placeholder="Senha" type="password" />
-      </FormControl>
+      </Flex>
+      <Flex
+        as="aside"
+        w="full"
+        h="full"
+        maxW={360}
+        maxH={360}
+        bg="gray.100"
+        alignItems="start"
+        padding={6}
+        flexDirection="column"
+        justifyContent="center"
+        transition="ease-in-out .2s"
+        borderRadius="3xl"
+      >
+        <FormLabel mb={8} fontSize={20}>
+          Entrar
+        </FormLabel>
+        <FormControl onSubmit={handleSubmit(onSubmit)}>
+          <Input {...register("email")} placeholder="Digite seu email" />
+        </FormControl>
 
-      <Button onClick={handleSubmit(onSubmit)} colorScheme="blue" mr={3}>
-        Entrar
-      </Button>
-    </>
+        <FormControl mt={8} mb={10}>
+          <Input
+            {...register("password")}
+            placeholder="Digite sua senha"
+            type="password"
+          />
+        </FormControl>
+
+        <Button
+          onClick={handleSubmit(onSubmit)}
+          colorScheme="blue"
+          mr={3}
+          w="full"
+          bgColor="#152259"
+          borderRadius="3xl"
+        >
+          Log in
+        </Button>
+      </Flex>
+    </HStack>
   );
 };
