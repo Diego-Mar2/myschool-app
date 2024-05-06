@@ -37,16 +37,16 @@ function formatDate(date: string) {
 function extractData(item: Class): TableRow {
   return [
     item.id,
-    item.name,
-    item.description,
-    `${item.location.building}, ${
-      item.location.floor > 0 ? `${item.location.floor} º andar` : "Térreo"
-    }, ${item.location.classroom}`,
     item.subject_name,
     item.group_name,
     formatDate(item.date),
     item.start_time.substring(0, 5),
     item.end_time.substring(0, 5),
+    `${item.location.building}, ${
+      item.location.floor > 0 ? `${item.location.floor} º andar` : "Térreo"
+    }, ${item.location.classroom}`,
+    item.name,
+    item.description,
   ];
 }
 
@@ -73,14 +73,14 @@ export function Classes({ Form }: ClassesProps) {
 
   const titles = [
     "ID",
-    "Aula",
-    "Descrição",
-    "Local",
     "Matéria",
     "Turma",
     "Data",
     "Início",
     "Término",
+    "Local",
+    "Aula",
+    "Descrição",
   ];
   const tableRows: TableRow[] = listData.map(extractData);
   const slideOverInfos: TableRow | undefined = data && extractData(data);
