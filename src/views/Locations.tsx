@@ -1,6 +1,11 @@
-import { Table, Tr, Td, Tbody, Flex, Thead, Th } from "@chakra-ui/react";
+import { Header } from "../components/Header";
+import { TableSection, type TableRow } from "../components/TableSection";
+import { SlideOver } from "../components/SlideOver";
+import { ModalForm } from "../components/ModalForm";
+
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import Header from "../components/Header";
+import { useDrawer } from "../hooks/useDrawer";
+import { useFormModal } from "../hooks/useFormModal";
 
 interface LocationsProps {
   Form: (props: any) => React.ReactNode;
@@ -13,61 +18,73 @@ export interface Location {
   classroom: string;
 }
 
-export default function Locations({ Form }: LocationsProps) {
+function extractData(item?: Location): TableRow {
+  if (!item) {
+    return null;
+  }
+
+  return [
+    item.id,
+    item.building,
+    item.floor > 0 ? `${item.floor} º andar` : "Térreo",
+    item.classroom,
+  ];
+}
+
+export function Locations({ Form }: LocationsProps) {
   const {
     data,
+    setData,
     listData,
     handleFindById,
     handleDeleteById,
     handleCreate,
     handleUpdateById,
   } = useSectionCRUD<Location>("/locations");
+
+  const {
+    isDrawerOpen,
+    handleOpenDrawer,
+    handleCloseDrawer,
+    handleDeleteRegister,
+  } = useDrawer(data, setData, handleFindById, handleDeleteById);
+
+  const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
+    useFormModal();
+
+  const titles = ["ID", "Prédio", "Andar", "Sala"];
+  const tableRows: TableRow[] = listData.map(extractData);
+  const slideOverInfos: TableRow | undefined = extractData(data);
+
   return (
     <div>
-      <Header
+      <Header handleOpenFormModal={handleOpenFormModal} />
+
+      <TableSection
+        tableTitles={titles}
+        tableRows={tableRows}
+        handleOpenDrawer={handleOpenDrawer}
+      />
+
+      <SlideOver
+        isOpen={isDrawerOpen}
+        title="Detalhes da Localização"
+        slideOverTitles={titles}
+        slideOverInfos={slideOverInfos}
+        onClose={handleCloseDrawer}
+        handleOpenFormModal={handleOpenFormModal}
+        handleDelete={handleDeleteRegister}
+      />
+
+      <ModalForm
+        isOpen={isFormModalOpen}
+        data={data}
         Form={Form}
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
-        data={data}
+        handleCloseFormModal={handleCloseFormModal}
+        handleCloseDrawer={handleCloseDrawer}
       />
-      {data && (
-        <Flex>
-          {JSON.stringify(data)}
-          <button
-            style={{ background: "red" }}
-            onClick={() => handleDeleteById(data.id)}
-          >
-            deletar registro
-          </button>
-        </Flex>
-      )}
-
-<Table variant="striped" colorScheme="teal" size="sm">
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Prédio</Th>
-            <Th>Andar</Th>
-            <Th>Sala</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {listData.map(({id,building,floor,classroom}) => (
-            <Tr
-              key={id}
-              onClick={() => {
-                handleFindById(id);
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              <Td>{id}</Td>
-              <Td>{building}</Td>
-              <Td>{floor > 0 ? `${floor} º` : "Térreo"}</Td>
-              <Td>{classroom}</Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
     </div>
   );
 }

@@ -1,9 +1,13 @@
-import { Table, Tr, Td, Tbody, Thead, Th } from "@chakra-ui/react";
+import { Header } from "../components/Header";
+import { TableSection, type TableRow } from "../components/TableSection";
+import { SlideOver } from "../components/SlideOver";
+import { ModalForm } from "../components/ModalForm";
+
 import { useSectionCRUD } from "../hooks/useSectionCRUD";
-import Header from "../components/Header";
-import { Location } from "./Locations";
-import SideOver from "../components/SideOver";
-import { useState } from "react";
+import { useDrawer } from "../hooks/useDrawer";
+import { useFormModal } from "../hooks/useFormModal";
+
+import type { Location } from "./Locations";
 
 interface ClassesProps {
   Form: (props: any) => React.ReactNode;
@@ -16,12 +20,37 @@ export interface Class {
   date: string;
   start_time: string;
   end_time: string;
+  subject_name: string;
   group_id: number;
+  group_name: string;
   location_id: number;
   location: Omit<Location, "id">;
 }
 
-export default function Classes({ Form }: ClassesProps) {
+function formatDate(date: string) {
+  const dateObj = new Date(date);
+  dateObj.setDate(dateObj.getDate() + 1);
+
+  return dateObj.toLocaleDateString();
+}
+
+function extractData(item: Class): TableRow {
+  return [
+    item.id,
+    item.subject_name,
+    item.group_name,
+    formatDate(item.date),
+    item.start_time.substring(0, 5),
+    item.end_time.substring(0, 5),
+    `${item.location.building}, ${
+      item.location.floor > 0 ? `${item.location.floor} º andar` : "Térreo"
+    }, ${item.location.classroom}`,
+    item.name,
+    item.description,
+  ];
+}
+
+export function Classes({ Form }: ClassesProps) {
   const {
     data,
     setData,
@@ -32,90 +61,59 @@ export default function Classes({ Form }: ClassesProps) {
     handleDeleteById,
   } = useSectionCRUD<Class>("/classes");
 
-  const [sideOpen, setSideOpen] = useState(false);
+  const {
+    isDrawerOpen,
+    handleOpenDrawer,
+    handleCloseDrawer,
+    handleDeleteRegister,
+  } = useDrawer(data, setData, handleFindById, handleDeleteById);
 
-  function handleClose() {
-    setSideOpen(false);
-    setData(undefined);
-  }
+  const { isFormModalOpen, handleOpenFormModal, handleCloseFormModal } =
+    useFormModal();
+
+  const titles = [
+    "ID",
+    "Matéria",
+    "Turma",
+    "Data",
+    "Início",
+    "Término",
+    "Local",
+    "Aula",
+    "Descrição",
+  ];
+  const tableRows: TableRow[] = listData.map(extractData);
+  const slideOverInfos: TableRow | undefined = data && extractData(data);
 
   return (
     <div>
-      <Header
+      <Header handleOpenFormModal={handleOpenFormModal} />
+
+      <TableSection
+        tableTitles={titles}
+        tableRows={tableRows}
+        handleOpenDrawer={handleOpenDrawer}
+      />
+
+      <SlideOver
+        isOpen={isDrawerOpen}
+        title="Detalhes da Aula"
+        slideOverTitles={titles}
+        slideOverInfos={slideOverInfos}
+        onClose={handleCloseDrawer}
+        handleOpenFormModal={handleOpenFormModal}
+        handleDelete={handleDeleteRegister}
+      />
+
+      <ModalForm
+        isOpen={isFormModalOpen}
+        data={data}
         Form={Form}
         handleCreate={handleCreate}
         handleUpdateById={handleUpdateById}
-        data={data}
+        handleCloseFormModal={handleCloseFormModal}
+        handleCloseDrawer={handleCloseDrawer}
       />
-      <SideOver
-        data={data}
-        isOpen={sideOpen}
-        onClose={handleClose}
-        handleDeleteById={handleDeleteById}
-      >
-        {/* {JSON.stringify(data)}
-          <button
-            style={{ background: "red" }}
-            onClick={() => handleDeleteById(data.id)}
-          >
-            deletar registro
-          </button> */}
-      </SideOver>
-
-      <Table variant="striped" colorScheme="teal" size="sm">
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Aula</Th>
-            <Th>Descrição</Th>
-            <Th>Local</Th>
-            <Th>Turma</Th>
-            <Th>Data</Th>
-            <Th>Início</Th>
-            <Th>Término</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {listData.map(
-            ({
-              id,
-              name,
-              description,
-              location: { building, floor, classroom },
-              group_id,
-              date,
-              start_time,
-              end_time,
-            }) => {
-              const dateObj = new Date(date);
-              dateObj.setDate(dateObj.getDate() + 1);
-
-              return (
-                <Tr
-                  key={id}
-                  onClick={() => {
-                    handleFindById(id);
-                    setSideOpen(true);
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  <Td>{id}</Td>
-                  <Td>{name}</Td>
-                  <Td>{description}</Td>
-                  <Td>
-                    {building}, {floor > 0 ? `${floor} º` : "Térreo"},{" "}
-                    {classroom}
-                  </Td>
-                  <Td>{group_id}</Td>
-                  <Td>{dateObj.toLocaleDateString()}</Td>
-                  <Td>{start_time.substring(0, 5)}</Td>
-                  <Td>{end_time.substring(0, 5)}</Td>
-                </Tr>
-              );
-            }
-          )}
-        </Tbody>
-      </Table>
     </div>
   );
 }

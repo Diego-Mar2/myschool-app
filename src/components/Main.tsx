@@ -5,7 +5,7 @@ interface MainProps {
   activeSection: SectionName;
 }
 
-export default function Main({ activeSection }: MainProps) {
+export function Main({ activeSection }: MainProps) {
   const { component: Component, form: Form } = Sections[activeSection];
 
   return (
