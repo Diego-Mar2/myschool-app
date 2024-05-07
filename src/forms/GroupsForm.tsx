@@ -163,9 +163,8 @@ export function GroupsForm({
         <FormLabel>Ano</FormLabel>
         <Input
           {...register("year", { valueAsNumber: true })}
+          type="number"
           placeholder="Ano"
-          minLength={4}
-          maxLength={4}
         />
       </FormControl>
 

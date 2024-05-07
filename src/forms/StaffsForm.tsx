@@ -55,7 +55,7 @@ export function StaffsForm({
 
       <FormControl isRequired>
         <FormLabel>E-mail</FormLabel>
-        <Input {...register("email")} />
+        <Input {...register("email")} type="email" />
       </FormControl>
 
       {data?.id && (
@@ -67,12 +67,12 @@ export function StaffsForm({
 
       <FormControl isRequired>
         <FormLabel>CPF</FormLabel>
-        <Input {...register("document")} />
+        <Input {...register("document")} type="number" />
       </FormControl>
 
       <FormControl isRequired>
         <FormLabel>Permissão pra administração?</FormLabel>
-        <Switch id="isAdmin" {...register("is_admin")} />
+        <Switch {...register("is_admin")} />
       </FormControl>
 
       {children}

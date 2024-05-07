@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { FormControl, FormLabel, Input, Select } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
@@ -26,7 +27,7 @@ export function StudentsForm({
   children,
 }: PropsWithChildren<StudentsFormProps>) {
   const { listData } = useSectionCRUD<Course>("/courses");
-  const { register, handleSubmit } = useForm<Student>({
+  const { register, setValue, handleSubmit } = useForm<Student>({
     defaultValues: data,
   });
 
@@ -47,6 +48,12 @@ export function StudentsForm({
     setIsSubmitting(false);
   };
 
+  useEffect(() => {
+    if (data) {
+      setValue("course_id", data.course_id);
+    }
+  }, [listData]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -59,7 +66,7 @@ export function StudentsForm({
 
       <FormControl isRequired>
         <FormLabel>E-mail</FormLabel>
-        <Input {...register("email")} />
+        <Input {...register("email")} type="email" />
       </FormControl>
 
       {data?.id && (
@@ -71,7 +78,7 @@ export function StudentsForm({
 
       <FormControl isRequired>
         <FormLabel>CPF</FormLabel>
-        <Input {...register("document")} />
+        <Input {...register("document")} type="number" />
       </FormControl>
 
       <FormControl isRequired>
@@ -96,6 +103,7 @@ export function StudentsForm({
           {...register("semester", {
             valueAsNumber: true,
           })}
+          type="number"
         />
       </FormControl>
 
