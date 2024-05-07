@@ -50,15 +50,20 @@ export const Login = () => {
         <FormLabel mb={8} fontSize={20}>
           Entrar
         </FormLabel>
-        <FormControl onSubmit={handleSubmit(onSubmit)}>
-          <Input {...register("email")} placeholder="Digite seu email" />
+
+        <FormControl>
+          <Input
+            {...register("email")}
+            type="email"
+            placeholder="Digite seu email"
+          />
         </FormControl>
 
         <FormControl mt={8} mb={10}>
           <Input
             {...register("password")}
-            placeholder="Digite sua senha"
             type="password"
+            placeholder="Digite sua senha"
           />
         </FormControl>
 

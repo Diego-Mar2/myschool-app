@@ -24,6 +24,8 @@ export const AuthContextProvider = ({
     supabase.auth.getSession().then(({ data }) => {
       if (data.session?.user.user_metadata.is_admin) {
         setSession(data.session);
+      } else {
+        setSession(null);
       }
     });
 
@@ -32,6 +34,8 @@ export const AuthContextProvider = ({
     } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user.user_metadata.is_admin) {
         setSession(session);
+      } else {
+        setSession(null);
       }
     });
 
