@@ -28,57 +28,51 @@ export const Login = () => {
         return alert("Credenciais inválidas");
       }
     }
+  };
 
-    return (
-      <HStack
+  return (
+    <HStack w="full" h="100vh" bg="#152259" padding={100} justifyContent="end">
+      <Flex></Flex>
+      <Flex
+        as="aside"
         w="full"
-        h="100vh"
-        bg="#152259"
-        padding={100}
-        justifyContent="end"
+        h="full"
+        maxW={360}
+        maxH={360}
+        bg="gray.100"
+        alignItems="start"
+        padding={6}
+        flexDirection="column"
+        justifyContent="center"
+        transition="ease-in-out .2s"
+        borderRadius="3xl"
       >
-        <Flex></Flex>
-        <Flex
-          as="aside"
+        <FormLabel mb={8} fontSize={20}>
+          Entrar
+        </FormLabel>
+        <FormControl onSubmit={handleSubmit(onSubmit)}>
+          <Input {...register("email")} placeholder="Digite seu email" />
+        </FormControl>
+
+        <FormControl mt={8} mb={10}>
+          <Input
+            {...register("password")}
+            placeholder="Digite sua senha"
+            type="password"
+          />
+        </FormControl>
+
+        <Button
+          onClick={handleSubmit(onSubmit)}
+          colorScheme="blue"
+          mr={3}
           w="full"
-          h="full"
-          maxW={360}
-          maxH={360}
-          bg="gray.100"
-          alignItems="start"
-          padding={6}
-          flexDirection="column"
-          justifyContent="center"
-          transition="ease-in-out .2s"
+          bgColor="#152259"
           borderRadius="3xl"
         >
-          <FormLabel mb={8} fontSize={20}>
-            Entrar
-          </FormLabel>
-          <FormControl onSubmit={handleSubmit(onSubmit)}>
-            <Input {...register("email")} placeholder="Digite seu email" />
-          </FormControl>
-
-          <FormControl mt={8} mb={10}>
-            <Input
-              {...register("password")}
-              placeholder="Digite sua senha"
-              type="password"
-            />
-          </FormControl>
-
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            colorScheme="blue"
-            mr={3}
-            w="full"
-            bgColor="#152259"
-            borderRadius="3xl"
-          >
-            Log in
-          </Button>
-        </Flex>
-      </HStack>
-    );
-  };
+          Log in
+        </Button>
+      </Flex>
+    </HStack>
+  );
 };
