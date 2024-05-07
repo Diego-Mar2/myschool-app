@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   FormControl,
@@ -107,6 +107,18 @@ export function GroupsForm({
     setGroupStudents((prev) => prev.filter(({ id }) => id !== studentId));
   }
 
+  useEffect(() => {
+    if (data) {
+      setValue("subject_id", data.subject_id);
+    }
+  }, [listDataSubjects]);
+
+  useEffect(() => {
+    if (data) {
+      setValue("teacher_id", data.teacher_id);
+    }
+  }, [listDataStaff]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -115,8 +127,7 @@ export function GroupsForm({
       <FormControl isRequired>
         <FormLabel>Matéria</FormLabel>
         <Select
-          value={data?.subject_id}
-          onChange={(e) => setValue("subject_id", Number(e.target.value))}
+          {...register("subject_id", { valueAsNumber: true })}
           placeholder="Selecione a matéria"
         >
           {listDataSubjects.map(({ id, name }) => {
@@ -141,8 +152,7 @@ export function GroupsForm({
       <FormControl isRequired>
         <FormLabel>Professor</FormLabel>
         <Select
-          value={data?.teacher_id ?? undefined}
-          onChange={(e) => setValue("teacher_id", Number(e.target.value))}
+          {...register("teacher_id", { valueAsNumber: true })}
           placeholder="Selecione o professor"
         >
           {listDataStaff.map(({ id, name, is_admin }) => {
@@ -163,9 +173,8 @@ export function GroupsForm({
         <FormLabel>Ano</FormLabel>
         <Input
           {...register("year", { valueAsNumber: true })}
+          type="number"
           placeholder="Ano"
-          minLength={4}
-          maxLength={4}
         />
       </FormControl>
 
