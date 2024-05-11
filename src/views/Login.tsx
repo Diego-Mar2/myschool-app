@@ -5,10 +5,13 @@ import {
   FormLabel,
   HStack,
   Input,
+  Text,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 import { supabase } from "../config/supabase";
+
+import logo from "../../public/imgs/image 1.svg";
 
 interface AuthForm {
   email: string;
@@ -31,8 +34,20 @@ export const Login = () => {
   };
 
   return (
-    <HStack w="full" h="100vh" bg="#152259" padding={100} justifyContent="end">
-      <Flex></Flex>
+    <HStack
+      w="full"
+      h="100vh"
+      bg="#152259"
+      paddingX={180}
+      justifyContent="space-between"
+    >
+      <Flex display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"}>
+        <img src={logo} alt="Logo" width={240} />
+        <Text fontSize="32px" color={"white"} fontWeight={700}mt={8}>
+          MINHA ESCOLA
+        </Text>
+        <Text maxW={260} color={"white"} textAlign={"center"}>O que você procura pro seu ensino, encontra aqui!</Text>
+      </Flex>
       <Flex
         as="aside"
         w="full"
