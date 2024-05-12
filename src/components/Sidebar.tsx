@@ -1,8 +1,10 @@
-import { Button, Flex, List, ListItem, theme } from "@chakra-ui/react";
+import { Button, Flex, List, ListItem, Text, theme } from "@chakra-ui/react";
 
 import { SectionName, SectionsNames } from "../views";
 
 import { supabase } from "../config/supabase";
+
+import LogoUser from "../../public/imgs/user.svg";
 
 interface SidebarProps {
   activeSection: SectionName;
@@ -28,7 +30,20 @@ export function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
       transition="ease-in-out .2s"
       borderRadius="3xl"
     >
-      <List w="full" my={8}>
+      <Flex
+        w={"full"}
+        paddingY={8}
+        borderBottom={"1px solid rgba(0, 0, 0, 0.189)"}
+      >
+        <img src={LogoUser} width={80} />
+        <Flex display={"flex"} flexDirection={"column"}>
+          <Text ml={6} mt={4}>
+            Diego Martins
+          </Text>
+          <Text ml={6}>Reg: 12312 </Text>
+        </Flex>
+      </Flex>
+      <List w="full">
         {SectionsNames.map((section) => (
           <ListItem key={section}>
             <Button

@@ -14,7 +14,13 @@ export function TableSection({
   handleOpenDrawer,
 }: TableSectionProps) {
   return (
-    <Table variant="striped" colorScheme="teal" size="sm">
+    <Table
+      variant="striped"
+      colorScheme="teal"
+      size="sm"
+      w={800}
+      overflowX={"auto"}
+    >
       <Thead>
         <Tr>
           {tableTitles.map((title) => (
