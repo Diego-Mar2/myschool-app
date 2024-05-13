@@ -21,7 +21,7 @@ export function Main({ activeSection }: MainProps) {
       borderRadius="3xl"
       overflowX="auto"
     >
-      <Flex>
+      <Flex w={"full"} h={"full"} pt={200} justifyContent={"center"}>
         <Component Form={Form} />
       </Flex>
     </Flex>

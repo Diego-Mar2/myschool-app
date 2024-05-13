@@ -39,22 +39,30 @@ export const Login = () => {
       h="100vh"
       bg="#152259"
       paddingX={180}
-      justifyContent="space-between"
+      justifyContent="center"
     >
-      <Flex display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"}>
+      <Flex
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
         <img src={logo} alt="Logo" width={240} />
-        <Text fontSize="32px" color={"white"} fontWeight={700}mt={8}>
+        <Text fontSize="32px" color={"white"} fontWeight={700} mt={8}>
           MINHA ESCOLA
         </Text>
-        <Text maxW={260} color={"white"} textAlign={"center"}>O que você procura pro seu ensino, encontra aqui!</Text>
+        <Text maxW={260} color={"white"} textAlign={"center"}>
+          O que você procura pro seu ensino, encontra aqui!
+        </Text>
       </Flex>
       <Flex
         as="aside"
         w="full"
         h="full"
-        maxW={360}
+        maxW={420}
         maxH={360}
         bg="gray.100"
+        ml={360}
         alignItems="start"
         padding={6}
         flexDirection="column"

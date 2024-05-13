@@ -54,7 +54,7 @@ export function ModalForm<T, A = any>({
     >
       <ModalOverlay />
 
-      <ModalContent p={4}>
+      <ModalContent p={4} maxW={1200}>
         <ModalHeader>{data ? "Editar" : "Adicionar"} </ModalHeader>
         <ModalCloseButton />
 
@@ -67,7 +67,7 @@ export function ModalForm<T, A = any>({
             handleCloseDrawer={handleCloseDrawer}
             setIsSubmitting={setIsSubmitting}
           >
-            <Flex gap={5}>
+            <Flex maxW={360} mt={10}>
               <Button onClick={handleCloseFormModal} flex={1}>
                 Cancelar
               </Button>
@@ -78,6 +78,7 @@ export function ModalForm<T, A = any>({
                 isLoading={isSubmitting}
                 loadingText={data ? "Editando" : "Criando"}
                 flex={1}
+                ml={4}
                 colorScheme="blue"
               >
                 {data ? "Editar" : "Criar"}

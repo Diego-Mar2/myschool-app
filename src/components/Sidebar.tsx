@@ -5,6 +5,7 @@ import { SectionName, SectionsNames } from "../views";
 import { supabase } from "../config/supabase";
 
 import LogoUser from "../../public/imgs/user.svg";
+import LogoLogout from "../../public/imgs/logout.svg";
 
 interface SidebarProps {
   activeSection: SectionName;
@@ -50,10 +51,10 @@ export function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
               w={300}
               justifyContent="flex-start"
               variant="ghost"
-              colorScheme="teal"
+              colorScheme="blue"
               bg={
                 activeSection === section
-                  ? theme.colors.teal[50]
+                  ? theme.colors.blue[50]
                   : theme.colors.transparent
               }
               onClick={() => {
@@ -66,7 +67,14 @@ export function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
         ))}
       </List>
 
-      <Button onClick={handleLogout}>Sair da conta</Button>
+      <Button
+        onClick={handleLogout}
+        colorScheme="blue"
+        w={150}
+        justifyContent={"space-between"}
+      >
+        Sair da conta {<img src={LogoLogout} width={20} />}
+      </Button>
     </Flex>
   );
 }

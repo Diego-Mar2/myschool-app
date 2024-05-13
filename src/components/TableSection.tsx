@@ -16,9 +16,9 @@ export function TableSection({
   return (
     <Table
       variant="striped"
-      colorScheme="teal"
+      colorScheme="blue"
       size="sm"
-      w={800}
+      w={1000}
       overflowX={"auto"}
     >
       <Thead>
@@ -40,9 +40,18 @@ export function TableSection({
               key={row[0]}
               onClick={() => handleOpenDrawer(row[0])}
               cursor="pointer"
+              h={12}
             >
               {row.map((column, index) => (
-                <Td key={index}>{column}</Td>
+                <Td
+                  key={index}
+                  maxW={200}
+                  overflow={"hidden"}
+                  textOverflow={"ellipsis"}
+                  whiteSpace={"nowrap"}
+                >
+                  {column}
+                </Td>
               ))}
             </Tr>
           );

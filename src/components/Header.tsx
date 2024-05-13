@@ -12,6 +12,7 @@ export function Header({ handleOpenFormModal }: HeaderProps) {
       top={6}
       left={6}
       onClick={handleOpenFormModal}
+      colorScheme="green"
     >
       + Adicionar
     </Button>

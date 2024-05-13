@@ -11,6 +11,7 @@ import {
   Divider,
   Button,
   DrawerFooter,
+  Spinner,
 } from "@chakra-ui/react";
 
 import type { PropsWithChildren } from "react";
@@ -47,7 +48,16 @@ export function SlideOver({
 
         <DrawerBody>
           {!slideOverInfos ? (
-            <Text>Carregando...</Text>
+            <Spinner
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='blue.500'
+            size='xl'
+            display={"flex"}
+            margin={"auto"}
+            mt={360}
+          />
           ) : (
             <>
               <Grid gap={5}>
@@ -70,31 +80,28 @@ export function SlideOver({
           )}
         </DrawerBody>
 
-        <DrawerFooter justifyContent="space-between" alignItems="center">
+        <DrawerFooter justifyContent="flex-end" alignItems="center">
           <Button
             onClick={handleOpenFormModal}
-            colorScheme="yellow"
-            variant="outline"
+            colorScheme="blue"
             isDisabled={loadingAdditionalInfo || !slideOverInfos}
             isLoading={loadingAdditionalInfo || !slideOverInfos}
             loadingText="Editar"
+            flex={1}
           >
             Editar
           </Button>
 
           <Button
             onClick={handleDelete}
-            color="red"
-            variant="outline"
+            colorScheme="red"
             isDisabled={loadingAdditionalInfo || !slideOverInfos}
             isLoading={loadingAdditionalInfo || !slideOverInfos}
             loadingText="Deletar"
+            flex={1}
+            ml={4}
           >
             Deletar
-          </Button>
-
-          <Button onClick={onClose} colorScheme="blue">
-            Fechar
           </Button>
         </DrawerFooter>
       </DrawerContent>
