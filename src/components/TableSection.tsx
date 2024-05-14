@@ -18,7 +18,7 @@ export function TableSection({
       variant="striped"
       colorScheme="blue"
       size="sm"
-      w={1000}
+      w={900}
       overflowX={"auto"}
     >
       <Thead>

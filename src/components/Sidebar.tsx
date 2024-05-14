@@ -1,8 +1,11 @@
+import { useEffect, useState } from "react";
 import { Button, Flex, List, ListItem, Text, theme } from "@chakra-ui/react";
 
 import { SectionName, SectionsNames } from "../views";
 
 import { supabase } from "../config/supabase";
+import { useAuthContext } from "../contexts/AuthContext";
+import { Profile, getProfile } from "../services/getProfile";
 
 import LogoUser from "../../public/imgs/user.svg";
 import LogoLogout from "../../public/imgs/logout.svg";
@@ -13,9 +16,22 @@ interface SidebarProps {
 }
 
 export function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
+  const [profile, setProfile] = useState<Profile>()
+
+  const { session } = useAuthContext();
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
   };
+
+  useEffect(() => {
+    async function fetchProfile() {
+      const response = await getProfile(session?.access_token??'')
+      setProfile(response)
+    }
+
+    fetchProfile()
+  },[])
 
   return (
     <Flex
@@ -39,9 +55,9 @@ export function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
         <img src={LogoUser} width={80} />
         <Flex display={"flex"} flexDirection={"column"}>
           <Text ml={6} mt={4}>
-            Diego Martins
+            {profile?.name??'...'}
           </Text>
-          <Text ml={6}>Reg: 12312 </Text>
+          <Text ml={6}> Matrícula: {profile?.registration??'...'} </Text>
         </Flex>
       </Flex>
       <List w="full">
