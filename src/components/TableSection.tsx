@@ -1,4 +1,4 @@
-import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { Spinner, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 
 interface TableSectionProps {
   tableTitles: string[];
@@ -13,6 +13,20 @@ export function TableSection({
   tableRows,
   handleOpenDrawer,
 }: TableSectionProps) {
+  if (tableRows.length === 0) {
+    return (
+      <Spinner
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="blue.500"
+        size="xl"
+        display={"flex"}
+        margin={"auto"}
+      />
+    );
+  }
+
   return (
     <Table
       variant="striped"
