@@ -23,7 +23,7 @@ export function StaffsForm({
   children,
 }: PropsWithChildren<StaffsFormProps>) {
   const { register, handleSubmit } = useForm<Staff>({
-    defaultValues: data,
+    defaultValues: { ...data, is_admin: data?.is_admin ?? false },
   });
 
   const onSubmit = async (body: Staff) => {
@@ -70,7 +70,7 @@ export function StaffsForm({
         <Input {...register("document")} type="number" />
       </FormControl>
 
-      <FormControl isRequired>
+      <FormControl>
         <FormLabel>Permissão pra administração?</FormLabel>
         <Switch {...register("is_admin")} />
       </FormControl>
